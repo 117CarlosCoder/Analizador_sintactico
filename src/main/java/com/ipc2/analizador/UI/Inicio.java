@@ -5,6 +5,7 @@
 package com.ipc2.analizador.UI;
 
 import com.ipc2.analizador.Lexico.Lexico;
+import com.ipc2.analizador.Lexico.LexicoPrueba;
 import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoAritmetico;
 import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoAsignacion;
 import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoComentario;
@@ -373,6 +374,8 @@ public class Inicio extends javax.swing.JFrame {
                     System.out.println(text);
                     jTextPane1.setText(text);
                     
+                 LexicoPrueba lexicotext = new LexicoPrueba();
+                 lexicotext.lexico(text);
                 }
         }
         catch(Exception e){

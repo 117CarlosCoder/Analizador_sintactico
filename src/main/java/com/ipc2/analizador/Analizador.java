@@ -5,6 +5,7 @@
 package com.ipc2.analizador;
 
 import com.ipc2.analizador.UI.Inicio;
+//import com.ipc2.analizador.UI.Inicio;
 
 /**
  *
@@ -13,6 +14,9 @@ import com.ipc2.analizador.UI.Inicio;
 public class Analizador {
 
     public static void main(String[] args) {
-        new Inicio().setVisible(true);
+       new Inicio().setVisible(true);
+     
+       
+       
     }
 }

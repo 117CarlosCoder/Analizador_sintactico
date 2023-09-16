@@ -85,12 +85,6 @@ public class Lexico {
                 columna++;
                 return new Token(TipoOtro.PAROPN, "(");
             }
-            if (current == ' ') {
-                advance();
-                
-                columna++;
-                return new Token(TipoEspacio.SPACE, " ");
-            }
             if(Character.isWhitespace(current)){
                 advance();
                 
