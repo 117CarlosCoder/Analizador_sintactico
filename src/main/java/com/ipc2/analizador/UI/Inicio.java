@@ -4,7 +4,6 @@
  */
 package com.ipc2.analizador.UI;
 
-import com.ipc2.analizador.Lexico.Lexico;
 import com.ipc2.analizador.Lexico.LexicoPrueba;
 import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoAritmetico;
 import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoAsignacion;
@@ -16,7 +15,7 @@ import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoIdentificador;
 import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoLogico;
 import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoOtro;
 import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoPalabraRes;
-import com.ipc2.analizador.Lexico.Token.Token;
+import com.ipc2.analizador.Lexico.Token.TokenPrueba;
 import com.ipc2.analizador.UI.Paneles.Generador;
 import com.ipc2.analizador.UI.Paneles.Reportes;
 import java.awt.Color;
@@ -45,9 +44,10 @@ public class Inicio extends javax.swing.JFrame {
     private final Generador generador;
     private final Reportes reporte;
     private String text;
-    private Lexico lexico;
+    private LexicoPrueba lexico;
     private final NumeroLinea numeroLinea;
     private final NumeroLinea numeroLinea2;
+    private final NumeroLinea numeroLinea3;
     public static HashMap<Object,Object> mapTokens;
     public static List<List<Object>> infoTabla = new ArrayList<>();
     public static List<List<Object>> tablaToken = new ArrayList<>();
@@ -62,6 +62,8 @@ public class Inicio extends javax.swing.JFrame {
         numeroLinea = new NumeroLinea(jTextPane1);
         jScrollPane3.setRowHeaderView(numeroLinea);
         numeroLinea2 = new NumeroLinea(jTextArea2);
+        numeroLinea3 = new NumeroLinea(jTextArea1);
+        jScrollPane1.setRowHeaderView(numeroLinea3);
         jScrollPane2.setRowHeaderView(numeroLinea2);
         mapTokens = new HashMap<>();
         frame = this;
@@ -89,6 +91,9 @@ public class Inicio extends javax.swing.JFrame {
         jTextArea2 = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jButton2 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -119,31 +124,49 @@ public class Inicio extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(jTextPane1);
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jButton2.setText("Borrar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(jButton1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 592, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 592, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(15, Short.MAX_VALUE))
+                        .addComponent(jButton1)
+                        .addGap(45, 45, 45)
+                        .addComponent(jButton2))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(jScrollPane1))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 852, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -208,17 +231,40 @@ public class Inicio extends javax.swing.JFrame {
         String textFinal = "";
         System.out.println(text);
         
-        lexico = new Lexico(text);
-        int i = 0;
-        int fila = 0;
-        String tipo = "";
-        String valor = "";
-        Token token;
-        do {
+        lexico = new LexicoPrueba(text);
+        LexicoPrueba lexicocolor = new LexicoPrueba(text);
+        //int i = 0;
+        //int fila = 0;
+        //String tipo = "";
+        //String valor = "";
+        TokenPrueba token;
+        
+        do{
             token = lexico.nextToken();
+            System.out.println("El token en totalidad : " + token);
             System.out.println(token.type + ": " + token.value);
             String tokenText = token.type + ": " + token.value;
-            textFinal += tokenText + " fila : " + lexico.fila() + " columna : " + lexico.columna() + "\n";
+            textFinal += tokenText + " fila : " + token.fila + " columna : " + token.columna + "\n";
+            List<Object> valores = Arrays.asList(token.type,token.value);
+            tablaToken.add(valores);
+            List<Object> tabla = Arrays.asList(token.type,token.type.toString().toLowerCase(),token.value, token.fila,token.columna);
+            infoTabla.add(tabla);
+            mapTokens.put(token.type, token.value);
+            
+        }while(token.type != TipoEspacio.EOF);
+        
+        do{
+            token = lexicocolor.nextToken();
+            colorPalabrasprueba(token);
+            
+        }while(token.type != TipoEspacio.EOF);
+        
+        /*do {
+            token = lexico.nextToken();
+            System.out.println("El token en totalidad : " + token);
+            System.out.println(token.type + ": " + token.value);
+            String tokenText = token.type + ": " + token.value;
+            textFinal += tokenText + " fila : " + token.fila + " columna : " + token.columna + "\n";
             
             List<Object> valores = Arrays.asList(token.type,token.value);
             tablaToken.add(valores);
@@ -254,7 +300,7 @@ public class Inicio extends javax.swing.JFrame {
                 tipo = "TipoPalabraRes";
             }
                 
-            List<Object> tabla = Arrays.asList(tipo,token.type.toString().toLowerCase(),token.value, lexico.fila(),lexico.columna());
+            List<Object> tabla = Arrays.asList(tipo,token.type.toString().toLowerCase(),token.value, token.fila,token.columna);
             infoTabla.add(tabla);
             //infoTabla.add.(token.type,token.value,token.value, lexico.fila(),lexico.columna());
             
@@ -274,7 +320,7 @@ public class Inicio extends javax.swing.JFrame {
                     mapTokens.put(token.type, valor);
                     
                     
-                    System.out.println("es instancia de numero " + valor + " fila : " + lexico.fila() + " columna : " + lexico.columna());
+                    System.out.println("es instancia de numero " + valor + " fila : " + token.fila + " columna : " + token.columna);
                 }
                 if(mapTokens.get(token.type).toString().contains(token.value) && !(token.type instanceof TipoConstante)){
                     valor =  mapTokens.get(token.type).toString() + valor;
@@ -294,7 +340,7 @@ public class Inicio extends javax.swing.JFrame {
             
         } while (token.type != TipoEspacio.EOF);  
         mapTokens.put(token, i++);
-  
+  */
         for (List<Object> tabla : infoTabla) {
         for (Object field : tabla) {
         System.out.print(field + " ");
@@ -310,23 +356,20 @@ public class Inicio extends javax.swing.JFrame {
         System.out.println();
          
         dividirInstacias();
-        
-        
-       
-       
+ 
         System.out.println("tablaToken : " + tablaToken);
         System.out.println("tablaLsitadelistas : " + newListOfLists);
         
         colorPalabras();
          
-        
         jTextArea2.setText(textFinal);
         
        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
-        // TODO add your handling code here:
+        
+        
     }//GEN-LAST:event_jMenu2ActionPerformed
 
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
@@ -353,15 +396,17 @@ public class Inicio extends javax.swing.JFrame {
         int result = fileChooser.showOpenDialog(frame);
 
                 if (result == JFileChooser.APPROVE_OPTION) {
+                    
                     File file = fileChooser.getSelectedFile();
+                    
                     System.out.println("Archivo: " + file.getName());
                     
                     BufferedReader reader = new BufferedReader(new FileReader(file));
 
-       
                     StringBuilder stringBuilder = new StringBuilder();
 
                     String line = null;
+                    
                     while ((line = reader.readLine()) != null) {
                         stringBuilder.append(line);
                         stringBuilder.append("\n");
@@ -373,9 +418,7 @@ public class Inicio extends javax.swing.JFrame {
 
                     System.out.println(text);
                     jTextPane1.setText(text);
-                    
-                 LexicoPrueba lexicotext = new LexicoPrueba();
-                 lexicotext.lexico(text);
+               
                 }
         }
         catch(Exception e){
@@ -413,6 +456,11 @@ public class Inicio extends javax.swing.JFrame {
                     });*/
                
     }//GEN-LAST:event_jTextPane1KeyPressed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        jTextPane1.setText("");
+        jTextArea2.setText("");
+    }//GEN-LAST:event_jButton2ActionPerformed
     
     public static HashMap todoToken (){
           return mapTokens;
@@ -677,113 +725,183 @@ public class Inicio extends javax.swing.JFrame {
         System.out.println("");
     }
     
-    public void colorPalabras() {
-    StyledDocument doc = jTextPane1.getStyledDocument();
-    
-    String text1 = jTextPane1.getText();
-    
-    
+    public void colorPalabrasprueba(TokenPrueba token) {
+        StyledDocument doc = jTextPane1.getStyledDocument();
 
-    SwingUtilities.invokeLater(() -> {
-    // Limpia los atributos de estilo del documento
-    doc.setCharacterAttributes(0, text1.length(), jTextPane1.getStyle("default"), true);
+        String text1 = jTextPane1.getText();
 
-    for (List<Object> tabla : newListOfLists){
-        
-            Color color = Color.DARK_GRAY;
-            String tokenValue = tabla.get(1).toString();
-            int index = text1.indexOf(tokenValue);
-            
-            Style style = jTextPane1.addStyle("MyStyle", null);
-            int startIndex = 0 ;
-            
-            if (tabla.get(0) instanceof TipoIdentificador) {
-                color = Color.BLACK;
-                 while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
+        SwingUtilities.invokeLater(() -> {
+            // Limpia los atributos de estilo del documento
+            doc.setCharacterAttributes(0, text1.length(), jTextPane1.getStyle("default"), true);
 
-                    StyleConstants.setForeground(style, color);
-                    doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
-                    startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
-                    System.out.println("Repetir");
+                Color color = Color.DARK_GRAY;
+                String tokenValue = token.value;
+                int index = text1.indexOf(tokenValue);
+
+                Style style = jTextPane1.addStyle("MyStyle", null);
+                int startIndex = 0;
+
+                if (token.type instanceof TipoIdentificador) {
+                    color = Color.BLACK;
+                    while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
+
+                        StyleConstants.setForeground(style, color);
+                        doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
+                        startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
+                        System.out.println("Repetir");
+                    }
                 }
-            }
-            if (tabla.get(0) instanceof TipoPalabraRes) {
-                color = new Color(128, 0, 128);;
-                while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
+                if (token.type instanceof TipoPalabraRes) {
+                    color = new Color(128, 0, 128);;
+                    while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
 
-                    StyleConstants.setForeground(style, color);
-                    doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
-                    startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
-                    System.out.println("Repetir");
+                        StyleConstants.setForeground(style, color);
+                        doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
+                        startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
+                        System.out.println("Repetir");
+                    }
+
                 }
-                
-            }
-            if (tabla.get(0) instanceof TipoAritmetico || tabla.get(0) instanceof TipoComparacion || tabla.get(0) instanceof TipoLogico || tabla.get(0) instanceof TipoAsignacion) {
-                color = new Color(0, 191, 255);
-                while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
+                if (token.type instanceof TipoAritmetico || token.type  instanceof TipoComparacion || token.type  instanceof TipoLogico || token.type instanceof TipoAsignacion) {
+                    color = new Color(0, 191, 255);
+                    while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
 
-                    StyleConstants.setForeground(style, color);
-                    doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
-                    startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
-                    System.out.println("Repetir");
+                        StyleConstants.setForeground(style, color);
+                        doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
+                        startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
+                        System.out.println("Repetir");
+                    }
                 }
-            }  
-            if (tabla.get(0) instanceof TipoOtro) {
-                color = Color.GREEN;
-                 while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
+                if (token.type instanceof TipoOtro) {
+                    color = Color.GREEN;
+                    while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
 
-                    StyleConstants.setForeground(style, color);
-                    doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
-                    startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
-                    System.out.println("Repetir");
+                        StyleConstants.setForeground(style, color);
+                        doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
+                        startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
+                        System.out.println("Repetir");
+                    }
                 }
-            }
-            if (tabla.get(0) instanceof TipoConstante) {
-                color = Color.RED;
-                while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
+                if (token.type instanceof TipoConstante) {
+                    color = Color.RED;
+                    while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
 
-                    StyleConstants.setForeground(style, color);
-                    doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
-                    startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
-                    System.out.println("Repetir");
+                        StyleConstants.setForeground(style, color);
+                        doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
+                        startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
+                        System.out.println("Repetir");
+                    }
                 }
-            }
-            if (tabla.get(0) instanceof TipoComentario) {
-                color = Color.GRAY;
-                while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
+                if (token.type instanceof TipoComentario) {
+                    color = Color.GRAY;
+                    while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
 
-                    StyleConstants.setForeground(style, color);
-                    doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
-                    startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
-                    System.out.println("Repetir");
+                        StyleConstants.setForeground(style, color);
+                        doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
+                        startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
+                        System.out.println("Repetir");
+                    }
                 }
-            } 
-            
-            
 
+            System.out.println("index :" + index);
 
-            
-            System.out.println("Valor de token en colores : " + tokenValue + " llave : " + tabla.get(0) );
-            System.out.println();
-            
-            
-       
-                
-                
-             
-            
-        }
-    
-    });
-        
-    
+        });
+
     }
 
-    
+        public void colorPalabras() {
+        StyledDocument doc = jTextPane1.getStyledDocument();
+
+        String text1 = jTextPane1.getText();
+
+        SwingUtilities.invokeLater(() -> {
+            // Limpia los atributos de estilo del documento
+            doc.setCharacterAttributes(0, text1.length(), jTextPane1.getStyle("default"), true);
+
+            for (List<Object> tabla : newListOfLists) {
+
+                Color color = Color.DARK_GRAY;
+                String tokenValue = tabla.get(1).toString();
+                int index = text1.indexOf(tokenValue);
+
+                Style style = jTextPane1.addStyle("MyStyle", null);
+                int startIndex = 0;
+
+                if (tabla.get(0) instanceof TipoIdentificador) {
+                    color = Color.BLACK;
+                    while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
+
+                        StyleConstants.setForeground(style, color);
+                        doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
+                        startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
+                        System.out.println("Repetir");
+                    }
+                }
+                if (tabla.get(0) instanceof TipoPalabraRes) {
+                    color = new Color(128, 0, 128);;
+                    while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
+
+                        StyleConstants.setForeground(style, color);
+                        doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
+                        startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
+                        System.out.println("Repetir");
+                    }
+
+                }
+                if (tabla.get(0) instanceof TipoAritmetico || tabla.get(0) instanceof TipoComparacion || tabla.get(0) instanceof TipoLogico || tabla.get(0) instanceof TipoAsignacion) {
+                    color = new Color(0, 191, 255);
+                    while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
+
+                        StyleConstants.setForeground(style, color);
+                        doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
+                        startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
+                        System.out.println("Repetir");
+                    }
+                }
+                if (tabla.get(0) instanceof TipoOtro) {
+                    color = Color.GREEN;
+                    while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
+
+                        StyleConstants.setForeground(style, color);
+                        doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
+                        startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
+                        System.out.println("Repetir");
+                    }
+                }
+                if (tabla.get(0) instanceof TipoConstante) {
+                    color = Color.RED;
+                    while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
+
+                        StyleConstants.setForeground(style, color);
+                        doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
+                        startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
+                        System.out.println("Repetir");
+                    }
+                }
+                if (tabla.get(0) instanceof TipoComentario) {
+                    color = Color.GRAY;
+                    while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
+
+                        StyleConstants.setForeground(style, color);
+                        doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
+                        startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
+                        System.out.println("Repetir");
+                    }
+                }
+
+                System.out.println("Valor de token en colores : " + tokenValue + " llave : " + tabla.get(0));
+                System.out.println();
+
+            }
+
+        });
+
+    }
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -793,8 +911,10 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextPane jTextPane1;
     // End of variables declaration//GEN-END:variables
