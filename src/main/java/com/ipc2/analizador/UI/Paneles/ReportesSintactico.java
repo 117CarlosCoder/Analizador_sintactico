@@ -4,23 +4,16 @@
  */
 package com.ipc2.analizador.UI.Paneles;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.util.List;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
 /**
  *
  * @author carlos117
  */
-public class Reportes extends javax.swing.JPanel {
+public class ReportesSintactico extends javax.swing.JPanel {
 
   
     public static JButton button;
@@ -28,7 +21,7 @@ public class Reportes extends javax.swing.JPanel {
     /**
      * Creates new form Reportes
      */
-    public Reportes() {
+    public ReportesSintactico() {
         initComponents();
 
     }
@@ -52,7 +45,7 @@ public class Reportes extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Token", "Patron", "Lemax", "Fila", "Columna", "Imagen"
+                "Tipo", "Tokens", "Bloque", "Cantidad Func o Metd", "Cantidad de llamadas ", "Fila", "Columna", "Parametros de Funcion"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -63,6 +56,8 @@ public class Reportes extends javax.swing.JPanel {
             jTable1.getColumnModel().getColumn(3).setResizable(false);
             jTable1.getColumnModel().getColumn(4).setResizable(false);
             jTable1.getColumnModel().getColumn(5).setResizable(false);
+            jTable1.getColumnModel().getColumn(6).setResizable(false);
+            jTable1.getColumnModel().getColumn(7).setResizable(false);
         }
 
         add(jScrollPane1);
@@ -72,78 +67,22 @@ public class Reportes extends javax.swing.JPanel {
         jTable1.removeAll();
         jTable1.repaint();
         
+        System.out.println("lista de listas carga : " + listOfLists);
+        
         DefaultTableModel tableModel = new DefaultTableModel(
         new Object[][] {},
-        new String[] {"Token", "Patron", "Lexema", "Fila", "Columna", "Imagen"}
+        new String[] {"Tipo", "Tokens", "Bloque","Cantidad Fucn o Metd","Cantidad de llamadas ", "Fila", "Columna", "Parametros de funcion"}
         );
 
         for (List<Object> list : listOfLists) {
             tableModel.addRow(list.toArray());
-                    jTable1.getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
-
         }
-
+        
         SwingUtilities.invokeLater(() -> {
             jTable1.setModel(tableModel);
             tableModel.fireTableDataChanged();
-            jTable1.getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
-            jTable1.getColumnModel().getColumn(5).setCellEditor(new ButtonEditor());
-        });
-        
-        
-    }
-    
-   public class ButtonRenderer extends JButton implements TableCellRenderer {
-
-    public ButtonRenderer() {
-        setOpaque(true);
-    }
-
-    @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        setText("Generar"); // Texto en el botón
-
-        // Configurar el botón para cada fila
-        if (isSelected) {
-            setBackground(table.getSelectionBackground());
-        } else {
-            setBackground(table.getBackground());
-        }
-
-        return this;
-    }
-}
-
-public class ButtonEditor extends DefaultCellEditor {
-
-    protected JButton button;
-    private int clickedRow;
-    private int clickedColumn;
-
-    public ButtonEditor() {
-        super(new JTextField());
-        button = new JButton();
-        button.setOpaque(true);
-
-        // Acción al hacer clic en el botón
-        button.addActionListener((ActionEvent e) -> {
-            Object lexemaValue = jTable1.getValueAt(clickedRow, 2); // Para la columna "Lexema"
-            Imagen imagen = new Imagen();
-            imagen.GenerarImagen(lexemaValue);
-            imagen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            imagen.setVisible(true);
         });
     }
-
-    @Override
-    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        clickedRow = row;
-        clickedColumn = column;
-        button.setText("Generar"); // Texto en el botón
-        return button;
-    }
-}
-
     
  
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -38,5 +38,6 @@ public enum TipoPalabraRes {
     YIELD,
     WHILE,
     FOR,
-    IF   
+    IF,
+    VAR
 }

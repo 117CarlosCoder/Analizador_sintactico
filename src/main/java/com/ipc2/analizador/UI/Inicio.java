@@ -16,8 +16,11 @@ import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoLogico;
 import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoOtro;
 import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoPalabraRes;
 import com.ipc2.analizador.Lexico.Token.TokenPrueba;
+import com.ipc2.analizador.Sintactico.PDA_1;
+import com.ipc2.analizador.Sintactico.Sintactico;
 import com.ipc2.analizador.UI.Paneles.Generador;
 import com.ipc2.analizador.UI.Paneles.Reportes;
+import com.ipc2.analizador.UI.Paneles.ReportesSintactico;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.io.BufferedReader;
@@ -39,21 +42,24 @@ import javax.swing.text.StyledDocument;
  * @author carlos117
  */
 public class Inicio extends javax.swing.JFrame {
-    
+
     private final JFrame frame;
     private final Generador generador;
     private final Reportes reporte;
+    private final ReportesSintactico reportesSintactico;
     private String text;
     private LexicoPrueba lexico;
+    private Sintactico sintactico;
+    private PDA_1 sintacticoPDa;
     private final NumeroLinea numeroLinea;
     private final NumeroLinea numeroLinea2;
     private final NumeroLinea numeroLinea3;
-    public static HashMap<Object,Object> mapTokens;
+    public static HashMap<Object, Object> mapTokens;
     public static List<List<Object>> infoTabla = new ArrayList<>();
     public static List<List<Object>> tablaToken = new ArrayList<>();
-    public static  List<Object> newList = new ArrayList<>();
+    public static List<Object> newList = new ArrayList<>();
     public static List<List<Object>> newListOfLists = new ArrayList<>();
-    
+
     /**
      * Creates new form Inicio
      */
@@ -68,12 +74,13 @@ public class Inicio extends javax.swing.JFrame {
         mapTokens = new HashMap<>();
         frame = this;
         reporte = new Reportes();
+        reportesSintactico = new ReportesSintactico();
         generador = new Generador();
-        int panelMaxWidth = 600; 
-        int panelMaxHeight = 700; 
+        sintacticoPDa = new PDA_1();
+        int panelMaxWidth = 600;
+        int panelMaxHeight = 700;
         jPanel1.setMaximumSize(new Dimension(panelMaxWidth, panelMaxHeight));
 
-                
     }
 
     /**
@@ -100,6 +107,7 @@ public class Inicio extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
+        jMenu6 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
 
@@ -205,13 +213,21 @@ public class Inicio extends javax.swing.JFrame {
         });
         jMenuBar1.add(jMenu2);
 
-        jMenu3.setText("Reportes");
+        jMenu3.setText("Reportes Lexico");
         jMenu3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenu3MouseClicked(evt);
             }
         });
         jMenuBar1.add(jMenu3);
+
+        jMenu6.setText("Reportes Sintactico");
+        jMenu6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu6MouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenu6);
 
         jMenu4.setText("Ayuda");
         jMenuBar1.add(jMenu4);
@@ -230,7 +246,7 @@ public class Inicio extends javax.swing.JFrame {
         text = jTextPane1.getText();
         String textFinal = "";
         System.out.println(text);
-        
+
         lexico = new LexicoPrueba(text);
         LexicoPrueba lexicocolor = new LexicoPrueba(text);
         //int i = 0;
@@ -238,202 +254,123 @@ public class Inicio extends javax.swing.JFrame {
         //String tipo = "";
         //String valor = "";
         TokenPrueba token;
-        
-        do{
+
+        do {
             token = lexico.nextToken();
             System.out.println("El token en totalidad : " + token);
             System.out.println(token.type + ": " + token.value);
             String tokenText = token.type + ": " + token.value;
-            textFinal += tokenText + " fila : " + token.fila + " columna : " + token.columna + "\n";
-            List<Object> valores = Arrays.asList(token.type,token.value);
-            tablaToken.add(valores);
-            List<Object> tabla = Arrays.asList(token.type,token.type.toString().toLowerCase(),token.value, token.fila,token.columna);
-            infoTabla.add(tabla);
             mapTokens.put(token.type, token.value);
-            
-        }while(token.type != TipoEspacio.EOF);
-        
-        do{
+            System.out.println("Hashmap Tokens valro de inicio: " + mapTokens);
+            textFinal += tokenText + " fila : " + token.fila + " columna : " + token.columna + "\n";
+            List<Object> valores = Arrays.asList(token.type, token.value);
+            tablaToken.add(valores);
+            List<Object> tabla = Arrays.asList(token.type, token.type.toString().toLowerCase(), token.value, token.fila, token.columna);
+            infoTabla.add(tabla);
+
+        } while (token.type != TipoEspacio.EOF);
+
+        //sintactico = new Sintactico(tablaToken);
+        //sintactico.valorSintactico();
+
+        do {
             token = lexicocolor.nextToken();
             colorPalabrasprueba(token);
-            
-        }while(token.type != TipoEspacio.EOF);
-        
-        /*do {
-            token = lexico.nextToken();
-            System.out.println("El token en totalidad : " + token);
-            System.out.println(token.type + ": " + token.value);
-            String tokenText = token.type + ": " + token.value;
-            textFinal += tokenText + " fila : " + token.fila + " columna : " + token.columna + "\n";
-            
-            List<Object> valores = Arrays.asList(token.type,token.value);
-            tablaToken.add(valores);
-            
-            if(token.type instanceof TipoAritmetico){
-                tipo = "TipoAritmetico";
-            }
-            if(token.type instanceof TipoComentario){
-                tipo = "TipoComentario";
-            }
-            if(token.type instanceof TipoAsignacion){
-                tipo = "TipoAsignacion";
-            }
-            if(token.type instanceof TipoComparacion){
-                tipo = "TipoComparacion";
-            }
-            if(token.type instanceof TipoConstante){
-                tipo = "TipoConstante";
-            }
-            if(token.type instanceof TipoEspacio){
-                tipo = "TipoEspacio";
-            }
-            if(token.type instanceof TipoIdentificador){
-                tipo = "TipoIdentificador";
-            }
-            if(token.type instanceof TipoLogico){
-                tipo = "TipoLogico";
-            }
-            if(token.type instanceof TipoOtro){
-                tipo = "TipoOtro";
-            }
-            if(token.type instanceof TipoPalabraRes){
-                tipo = "TipoPalabraRes";
-            }
-                
-            List<Object> tabla = Arrays.asList(tipo,token.type.toString().toLowerCase(),token.value, token.fila,token.columna);
-            infoTabla.add(tabla);
-            //infoTabla.add.(token.type,token.value,token.value, lexico.fila(),lexico.columna());
-            
-            System.out.println("Valor de matriz : " + tabla);
-            
-            
-            fila++;
-           
-                        
 
-            if (mapTokens.containsKey(token.type)) {
-                //valor += mapTokens.get(token.type) + token.value;
-                valor = token.value;
-                
-                if(token.type instanceof TipoConstante || token.type instanceof TipoComentario){
-                    valor = mapTokens.get(token.type).toString() + "," + valor;
-                    mapTokens.put(token.type, valor);
-                    
-                    
-                    System.out.println("es instancia de numero " + valor + " fila : " + token.fila + " columna : " + token.columna);
-                }
-                if(mapTokens.get(token.type).toString().contains(token.value) && !(token.type instanceof TipoConstante)){
-                    valor =  mapTokens.get(token.type).toString() + valor;
-                    mapTokens.put(token.type, valor);
-                    System.out.println("Cadena de valores " + valor);
-                }
-                
-                valor = "";
-                
-            }
-            else{
-                mapTokens.put(token.type, token.value);
-            }
-            
-            System.out.println("hashmap tokens : " + mapTokens);
-            
-            
-        } while (token.type != TipoEspacio.EOF);  
-        mapTokens.put(token, i++);
-  */
+        } while (token.type != TipoEspacio.EOF);
+
         for (List<Object> tabla : infoTabla) {
-        for (Object field : tabla) {
-        System.out.print(field + " ");
+            for (Object field : tabla) {
+                System.out.print(field + " ");
+            }
+            System.out.println();
         }
-        System.out.println();
-        }
-        
+
         for (List<Object> tabla : tablaToken) {
             System.out.println(tabla.get(0));
             System.out.println(tabla.get(1));
-        }  
-        
+        }
+
         System.out.println();
-         
+
         dividirInstacias();
- 
+
         System.out.println("tablaToken : " + tablaToken);
         System.out.println("tablaLsitadelistas : " + newListOfLists);
-        
+
         colorPalabras();
-         
+
         jTextArea2.setText(textFinal);
-        
-       
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
-        
-        
+
+
     }//GEN-LAST:event_jMenu2ActionPerformed
 
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
         jMenuItem1.setVisible(false);
-        getContentPane().removeAll(); 
+        getContentPane().removeAll();
         getContentPane().add(generador);
-        revalidate();  
+        revalidate();
         repaint();
     }//GEN-LAST:event_jMenu2MouseClicked
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         generador.reset();
         jMenuItem1.setVisible(true);
-        getContentPane().removeAll(); 
+        getContentPane().removeAll();
         getContentPane().add(jPanel1);
-        revalidate();  
+        revalidate();
         repaint();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        try{
-        
-        JFileChooser fileChooser = new JFileChooser();
-        int result = fileChooser.showOpenDialog(frame);
+        try {
 
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    
-                    File file = fileChooser.getSelectedFile();
-                    
-                    System.out.println("Archivo: " + file.getName());
-                    
-                    BufferedReader reader = new BufferedReader(new FileReader(file));
+            JFileChooser fileChooser = new JFileChooser();
+            int result = fileChooser.showOpenDialog(frame);
 
-                    StringBuilder stringBuilder = new StringBuilder();
+            if (result == JFileChooser.APPROVE_OPTION) {
 
-                    String line = null;
-                    
-                    while ((line = reader.readLine()) != null) {
-                        stringBuilder.append(line);
-                        stringBuilder.append("\n");
-                    }
+                File file = fileChooser.getSelectedFile();
 
-                    reader.close();
+                System.out.println("Archivo: " + file.getName());
 
-                    text= stringBuilder.toString();
+                BufferedReader reader = new BufferedReader(new FileReader(file));
 
-                    System.out.println(text);
-                    jTextPane1.setText(text);
-               
+                StringBuilder stringBuilder = new StringBuilder();
+
+                String line = null;
+
+                while ((line = reader.readLine()) != null) {
+                    stringBuilder.append(line);
+                    stringBuilder.append("\n");
                 }
-        }
-        catch(Exception e){
+
+                reader.close();
+
+                text = stringBuilder.toString();
+
+                System.out.println(text);
+                jTextPane1.setText(text);
+
+            }
+        } catch (Exception e) {
             System.out.println("Eroorrrrrrr : " + e);
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
         jMenuItem1.setVisible(false);
-        getContentPane().removeAll(); 
+        getContentPane().removeAll();
         //reporte.removeAll();
         reporte.insertarInfo(infoTabla);
         getContentPane().add(reporte);
         //infoTabla.clear();
-        revalidate();  
+        revalidate();
         repaint();
     }//GEN-LAST:event_jMenu3MouseClicked
 
@@ -454,277 +391,284 @@ public class Inicio extends javax.swing.JFrame {
                             startIndex += "carlos".length();
                         }
                     });*/
-               
+
     }//GEN-LAST:event_jTextPane1KeyPressed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         jTextPane1.setText("");
         jTextArea2.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
-    
-    public static HashMap todoToken (){
-          return mapTokens;
-    }
-    
-    public static List<List<Object>> infoT (){
-          return infoTabla;
-    }
-    
-    public void dividirInstacias(){
-                
-        for (List<Object> list : tablaToken){
-            for(Object value : list){
-                if(value instanceof TipoIdentificador ){
-                        for (int j = 0; j < 2; j++) {
-                        Object value2 = list.get(j);
-                            if (!newList.contains(value2)) {
-                                newList.add(value2);
-                                System.out.println("tabla: " + newList);
-                                if (j == 1) {
-                                  List<Object> valores = Arrays.asList(list.get(0),list.get(1));
-                                  newListOfLists.add(valores);
-                                  System.out.println("tablaLsitadelistas : " + newListOfLists);
 
-                                }
+    private void jMenu6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu6MouseClicked
+        jMenuItem1.setVisible(false);
+        getContentPane().removeAll();
+        //reporte.removeAll();
+        List<List<Object>> listainterna = new ArrayList<>();
+        System.out.println(text);
+        if (text != null) {
+            listainterna = sintacticoPDa.validarTok(text);
+            reportesSintactico.insertarInfo(listainterna);
+        }
+        else{
+            reportesSintactico.insertarInfo(listainterna);
+        }
+        
+        
+        getContentPane().add(reportesSintactico);
+        //infoTabla.clear();
+        revalidate();
+        repaint();
+    }//GEN-LAST:event_jMenu6MouseClicked
+
+    public static HashMap todoToken() {
+        return mapTokens;
+    }
+
+    public static List<List<Object>> infoT() {
+        return infoTabla;
+    }
+
+    public void dividirInstacias() {
+
+        for (List<Object> list : tablaToken) {
+            for (Object value : list) {
+                if (value instanceof TipoIdentificador) {
+                    for (int j = 0; j < 2; j++) {
+                        Object value2 = list.get(j);
+                        if (!newList.contains(value2)) {
+                            newList.add(value2);
+                            System.out.println("tabla: " + newList);
+                            if (j == 1) {
+                                List<Object> valores = Arrays.asList(list.get(0), list.get(1));
+                                newListOfLists.add(valores);
+                                System.out.println("tablaLsitadelistas : " + newListOfLists);
 
                             }
 
-                    }                   
+                        }
+
+                    }
                 }
-                
+
             }
         }
-        for(List<Object> list : tablaToken){
-        for(Object value : list){
-                if(value instanceof TipoAritmetico ){
-                        for (int j = 0; j < 2; j++) {
+        for (List<Object> list : tablaToken) {
+            for (Object value : list) {
+                if (value instanceof TipoAritmetico) {
+                    for (int j = 0; j < 2; j++) {
                         Object value2 = list.get(j);
-                            if (!newList.contains(value2)) {
-                                newList.add(value2);
-                                System.out.println("tabla: " + newList);
-                                if (j == 1) {
-                                  List<Object> valores = Arrays.asList(list.get(0),list.get(1));
-                                  newListOfLists.add(valores);
-                                  System.out.println("tablaLsitadelistas : " + newListOfLists);
-
-                                }
+                        if (!newList.contains(value2)) {
+                            newList.add(value2);
+                            System.out.println("tabla: " + newList);
+                            if (j == 1) {
+                                List<Object> valores = Arrays.asList(list.get(0), list.get(1));
+                                newListOfLists.add(valores);
+                                System.out.println("tablaLsitadelistas : " + newListOfLists);
 
                             }
 
                         }
 
+                    }
 
-                    
                 }
-                
-        }}
-        for(List<Object> list : tablaToken){
-        for(Object value : list){
-                if(value instanceof TipoAsignacion ){
-                   
-                        for (int j = 0; j < 2; j++) {
-                        Object value2 = list.get(j);
-                            if (!newList.contains(value2)) {
-                                newList.add(value2);
-                                System.out.println("tabla: " + newList);
-                                if (j == 1) {
-                                  List<Object> valores = Arrays.asList(list.get(0),list.get(1));
-                                  newListOfLists.add(valores);
-                                  System.out.println("tablaLsitadelistas : " + newListOfLists);
 
-                                }
-
-                            }
-
-                        }
-
-
-                    
-                }
-                
+            }
         }
+        for (List<Object> list : tablaToken) {
+            for (Object value : list) {
+                if (value instanceof TipoAsignacion) {
+
+                    for (int j = 0; j < 2; j++) {
+                        Object value2 = list.get(j);
+                        if (!newList.contains(value2)) {
+                            newList.add(value2);
+                            System.out.println("tabla: " + newList);
+                            if (j == 1) {
+                                List<Object> valores = Arrays.asList(list.get(0), list.get(1));
+                                newListOfLists.add(valores);
+                                System.out.println("tablaLsitadelistas : " + newListOfLists);
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
         }
-        for(List<Object> list : tablaToken){
-        for(Object value : list){
-                if(value instanceof TipoComparacion ){
-                        for (int j = 0; j < 2; j++) {
+        for (List<Object> list : tablaToken) {
+            for (Object value : list) {
+                if (value instanceof TipoComparacion) {
+                    for (int j = 0; j < 2; j++) {
                         Object value2 = list.get(j);
-                            if (!newList.contains(value2)) {
-                                newList.add(value2);
-                                System.out.println("tabla: " + newList);
-                                if (j == 1) {
-                                  List<Object> valores = Arrays.asList(list.get(0),list.get(1));
-                                  newListOfLists.add(valores);
-                                  System.out.println("tablaLsitadelistas : " + newListOfLists);
-
-                                }
+                        if (!newList.contains(value2)) {
+                            newList.add(value2);
+                            System.out.println("tabla: " + newList);
+                            if (j == 1) {
+                                List<Object> valores = Arrays.asList(list.get(0), list.get(1));
+                                newListOfLists.add(valores);
+                                System.out.println("tablaLsitadelistas : " + newListOfLists);
 
                             }
 
                         }
 
+                    }
 
-                    
                 }
-                
-        }
-        }
-        
-        for(List<Object> list : tablaToken){
-        for(Object value : list){
-                if(value instanceof TipoEspacio ){
-                        for (int j = 0; j < 2; j++) {
-                        Object value2 = list.get(j);
-                            if (!newList.contains(value2)) {
-                                newList.add(value2);
-                                System.out.println("tabla: " + newList);
-                                if (j == 1) {
-                                  List<Object> valores = Arrays.asList(list.get(0),list.get(1));
-                                  newListOfLists.add(valores);
-                                  System.out.println("tablaLsitadelistas : " + newListOfLists);
 
-                                }
-
-                            }
-
-                        }
-
-
-                    
-                }
-                
-        }}
-        for(List<Object> list : tablaToken){
-        for(Object value : list){
-                if(value instanceof TipoLogico ){
-                        for (int j = 0; j < 2; j++) {
-                        Object value2 = list.get(j);
-                            if (!newList.contains(value2)) {
-                                newList.add(value2);
-                                System.out.println("tabla: " + newList);
-                                if (j == 1) {
-                                  List<Object> valores = Arrays.asList(list.get(0),list.get(1));
-                                  newListOfLists.add(valores);
-                                  System.out.println("tablaLsitadelistas : " + newListOfLists);
-
-                                }
-
-                            }
-
-                        }
-
-
-                    
-                }
-                
-        }}
-        for(List<Object> list : tablaToken){
-        for(Object value : list){
-                if(value instanceof TipoOtro ){
-                        for (int j = 0; j < 2; j++) {
-                        Object value2 = list.get(j);
-                            if (!newList.contains(value2)) {
-                                newList.add(value2);
-                                System.out.println("tabla: " + newList);
-                                if (j == 1) {
-                                  List<Object> valores = Arrays.asList(list.get(0),list.get(1));
-                                  newListOfLists.add(valores);
-                                  System.out.println("tablaLsitadelistas : " + newListOfLists);
-
-                                }
-
-                            }
-
-                        }
-
-
-                    
-                }
-                
-        }}
-        
-        
-        for(List<Object> list : tablaToken){
-            for(Object value : list){
-                if(value instanceof TipoPalabraRes ){
-                
-                        for (int j = 0; j < 2; j++) {
-                        Object value2 = list.get(j);
-                            if (!newList.contains(value2)) {
-                                newList.add(value2);
-                                System.out.println("tabla: " + newList);
-                                if (j == 1) {
-                                  List<Object> valores = Arrays.asList(list.get(0),list.get(1));
-                                  newListOfLists.add(valores);
-                                  System.out.println("tablaLsitadelistas : " + newListOfLists);
-
-                                }
-
-                            }
-
-                        }
-
-
-                    
-                }
-                
-        }
+            }
         }
 
-        
-        for(List<Object> list : tablaToken){
-        for(Object value : list){
-                if(value instanceof TipoConstante ){
-                        for (int j = 0; j < 2; j++) {
+        for (List<Object> list : tablaToken) {
+            for (Object value : list) {
+                if (value instanceof TipoEspacio) {
+                    for (int j = 0; j < 2; j++) {
                         Object value2 = list.get(j);
-                            if (!newList.contains(value2)) {
-                                newList.add(value2);
-                                System.out.println("tabla: " + newList);
-                                if (j == 1) {
-                                  List<Object> valores = Arrays.asList(list.get(0),list.get(1));
-                                  newListOfLists.add(valores);
-                                  System.out.println("tablaLsitadelistas : " + newListOfLists);
-
-                                }
+                        if (!newList.contains(value2)) {
+                            newList.add(value2);
+                            System.out.println("tabla: " + newList);
+                            if (j == 1) {
+                                List<Object> valores = Arrays.asList(list.get(0), list.get(1));
+                                newListOfLists.add(valores);
+                                System.out.println("tablaLsitadelistas : " + newListOfLists);
 
                             }
 
                         }
 
+                    }
 
-                    
                 }
-                
-        }}
-        for(List<Object> list : tablaToken){
-        for(Object value : list){
-                if(value instanceof TipoComentario ){
-                        for (int j = 0; j < 2; j++) {
-                        Object value2 = list.get(j);
-                            if (!newList.contains(value2)) {
-                                newList.add(value2);
-                                System.out.println("tabla: " + newList);
-                                if (j == 1) {
-                                  List<Object> valores = Arrays.asList(list.get(0),list.get(1));
-                                  newListOfLists.add(valores);
-                                  System.out.println("tablaLsitadelistas : " + newListOfLists);
 
-                                }
+            }
+        }
+        for (List<Object> list : tablaToken) {
+            for (Object value : list) {
+                if (value instanceof TipoLogico) {
+                    for (int j = 0; j < 2; j++) {
+                        Object value2 = list.get(j);
+                        if (!newList.contains(value2)) {
+                            newList.add(value2);
+                            System.out.println("tabla: " + newList);
+                            if (j == 1) {
+                                List<Object> valores = Arrays.asList(list.get(0), list.get(1));
+                                newListOfLists.add(valores);
+                                System.out.println("tablaLsitadelistas : " + newListOfLists);
 
                             }
 
                         }
 
+                    }
 
-                    
                 }
-                
-        }}
+
+            }
+        }
+        for (List<Object> list : tablaToken) {
+            for (Object value : list) {
+                if (value instanceof TipoOtro) {
+                    for (int j = 0; j < 2; j++) {
+                        Object value2 = list.get(j);
+                        if (!newList.contains(value2)) {
+                            newList.add(value2);
+                            System.out.println("tabla: " + newList);
+                            if (j == 1) {
+                                List<Object> valores = Arrays.asList(list.get(0), list.get(1));
+                                newListOfLists.add(valores);
+                                System.out.println("tablaLsitadelistas : " + newListOfLists);
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        }
+
+        for (List<Object> list : tablaToken) {
+            for (Object value : list) {
+                if (value instanceof TipoPalabraRes) {
+
+                    for (int j = 0; j < 2; j++) {
+                        Object value2 = list.get(j);
+                        if (!newList.contains(value2)) {
+                            newList.add(value2);
+                            System.out.println("tabla: " + newList);
+                            if (j == 1) {
+                                List<Object> valores = Arrays.asList(list.get(0), list.get(1));
+                                newListOfLists.add(valores);
+                                System.out.println("tablaLsitadelistas : " + newListOfLists);
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        }
+
+        for (List<Object> list : tablaToken) {
+            for (Object value : list) {
+                if (value instanceof TipoConstante) {
+                    for (int j = 0; j < 2; j++) {
+                        Object value2 = list.get(j);
+                        if (!newList.contains(value2)) {
+                            newList.add(value2);
+                            System.out.println("tabla: " + newList);
+                            if (j == 1) {
+                                List<Object> valores = Arrays.asList(list.get(0), list.get(1));
+                                newListOfLists.add(valores);
+                                System.out.println("tablaLsitadelistas : " + newListOfLists);
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        }
+        for (List<Object> list : tablaToken) {
+            for (Object value : list) {
+                if (value instanceof TipoComentario) {
+                    for (int j = 0; j < 2; j++) {
+                        Object value2 = list.get(j);
+                        if (!newList.contains(value2)) {
+                            newList.add(value2);
+                            System.out.println("tabla: " + newList);
+                            if (j == 1) {
+                                List<Object> valores = Arrays.asList(list.get(0), list.get(1));
+                                newListOfLists.add(valores);
+                                System.out.println("tablaLsitadelistas : " + newListOfLists);
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        }
         System.out.println("");
         System.out.println("Valor de lista Final = " + newListOfLists);
         System.out.println("");
     }
-    
+
     public void colorPalabrasprueba(TokenPrueba token) {
         StyledDocument doc = jTextPane1.getStyledDocument();
 
@@ -734,74 +678,74 @@ public class Inicio extends javax.swing.JFrame {
             // Limpia los atributos de estilo del documento
             doc.setCharacterAttributes(0, text1.length(), jTextPane1.getStyle("default"), true);
 
-                Color color = Color.DARK_GRAY;
-                String tokenValue = token.value;
-                int index = text1.indexOf(tokenValue);
+            Color color = Color.DARK_GRAY;
+            String tokenValue = token.value;
+            int index = text1.indexOf(tokenValue);
 
-                Style style = jTextPane1.addStyle("MyStyle", null);
-                int startIndex = 0;
+            Style style = jTextPane1.addStyle("MyStyle", null);
+            int startIndex = 0;
 
-                if (token.type instanceof TipoIdentificador) {
-                    color = Color.BLACK;
-                    while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
+            if (token.type instanceof TipoIdentificador) {
+                color = Color.BLACK;
+                while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
 
-                        StyleConstants.setForeground(style, color);
-                        doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
-                        startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
-                        System.out.println("Repetir");
-                    }
+                    StyleConstants.setForeground(style, color);
+                    doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
+                    startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
+                    System.out.println("Repetir");
                 }
-                if (token.type instanceof TipoPalabraRes) {
-                    color = new Color(128, 0, 128);;
-                    while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
+            }
+            if (token.type instanceof TipoPalabraRes) {
+                color = new Color(128, 0, 128);;
+                while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
 
-                        StyleConstants.setForeground(style, color);
-                        doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
-                        startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
-                        System.out.println("Repetir");
-                    }
-
+                    StyleConstants.setForeground(style, color);
+                    doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
+                    startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
+                    System.out.println("Repetir");
                 }
-                if (token.type instanceof TipoAritmetico || token.type  instanceof TipoComparacion || token.type  instanceof TipoLogico || token.type instanceof TipoAsignacion) {
-                    color = new Color(0, 191, 255);
-                    while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
 
-                        StyleConstants.setForeground(style, color);
-                        doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
-                        startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
-                        System.out.println("Repetir");
-                    }
-                }
-                if (token.type instanceof TipoOtro) {
-                    color = Color.GREEN;
-                    while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
+            }
+            if (token.type instanceof TipoAritmetico || token.type instanceof TipoComparacion || token.type instanceof TipoLogico || token.type instanceof TipoAsignacion) {
+                color = new Color(0, 191, 255);
+                while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
 
-                        StyleConstants.setForeground(style, color);
-                        doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
-                        startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
-                        System.out.println("Repetir");
-                    }
+                    StyleConstants.setForeground(style, color);
+                    doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
+                    startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
+                    System.out.println("Repetir");
                 }
-                if (token.type instanceof TipoConstante) {
-                    color = Color.RED;
-                    while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
+            }
+            if (token.type instanceof TipoOtro) {
+                color = Color.GREEN;
+                while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
 
-                        StyleConstants.setForeground(style, color);
-                        doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
-                        startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
-                        System.out.println("Repetir");
-                    }
+                    StyleConstants.setForeground(style, color);
+                    doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
+                    startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
+                    System.out.println("Repetir");
                 }
-                if (token.type instanceof TipoComentario) {
-                    color = Color.GRAY;
-                    while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
+            }
+            if (token.type instanceof TipoConstante) {
+                color = Color.RED;
+                while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
 
-                        StyleConstants.setForeground(style, color);
-                        doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
-                        startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
-                        System.out.println("Repetir");
-                    }
+                    StyleConstants.setForeground(style, color);
+                    doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
+                    startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
+                    System.out.println("Repetir");
                 }
+            }
+            if (token.type instanceof TipoComentario) {
+                color = Color.GRAY;
+                while ((startIndex = text1.indexOf(tokenValue, startIndex)) >= 0) {
+
+                    StyleConstants.setForeground(style, color);
+                    doc.setCharacterAttributes(startIndex, tokenValue.length(), style, false);
+                    startIndex += tokenValue.length(); // Incrementa startIndex con la longitud del tokenValue
+                    System.out.println("Repetir");
+                }
+            }
 
             System.out.println("index :" + index);
 
@@ -809,7 +753,7 @@ public class Inicio extends javax.swing.JFrame {
 
     }
 
-        public void colorPalabras() {
+    public void colorPalabras() {
         StyledDocument doc = jTextPane1.getStyledDocument();
 
         String text1 = jTextPane1.getText();
@@ -897,8 +841,8 @@ public class Inicio extends javax.swing.JFrame {
         });
 
     }
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -907,6 +851,7 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
