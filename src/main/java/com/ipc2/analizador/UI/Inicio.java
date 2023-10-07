@@ -17,6 +17,7 @@ import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoOtro;
 import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoPalabraRes;
 import com.ipc2.analizador.Lexico.Token.TokenPrueba;
 import com.ipc2.analizador.Sintactico.PDA_1;
+import com.ipc2.analizador.Sintactico.ReglasProduccion.Identificador;
 import com.ipc2.analizador.Sintactico.Sintactico;
 import com.ipc2.analizador.UI.Paneles.Generador;
 import com.ipc2.analizador.UI.Paneles.Reportes;
@@ -56,6 +57,7 @@ public class Inicio extends javax.swing.JFrame {
     private final NumeroLinea numeroLinea3;
     public static HashMap<Object, Object> mapTokens;
     public static List<List<Object>> infoTabla = new ArrayList<>();
+    public static List<List<Object>> SintacticoTabla = new ArrayList<>();
     public static List<List<Object>> tablaToken = new ArrayList<>();
     public static List<Object> newList = new ArrayList<>();
     public static List<List<Object>> newListOfLists = new ArrayList<>();
@@ -77,6 +79,7 @@ public class Inicio extends javax.swing.JFrame {
         reportesSintactico = new ReportesSintactico();
         generador = new Generador();
         sintacticoPDa = new PDA_1();
+        sintactico = new Sintactico();
         int panelMaxWidth = 600;
         int panelMaxHeight = 700;
         jPanel1.setMaximumSize(new Dimension(panelMaxWidth, panelMaxHeight));
@@ -245,15 +248,18 @@ public class Inicio extends javax.swing.JFrame {
         infoTabla.clear();
         text = jTextPane1.getText();
         String textFinal = "";
+        String valorSintactico = "";
         System.out.println(text);
 
         lexico = new LexicoPrueba(text);
+        SintacticoTabla = sintactico.valorSintactico(text);
         LexicoPrueba lexicocolor = new LexicoPrueba(text);
         //int i = 0;
         //int fila = 0;
         //String tipo = "";
         //String valor = "";
         TokenPrueba token;
+        
 
         do {
             token = lexico.nextToken();
@@ -272,8 +278,25 @@ public class Inicio extends javax.swing.JFrame {
 
         //sintactico = new Sintactico(tablaToken);
         //sintactico.valorSintactico();
-
+        
+        for (List<Object> list : SintacticoTabla) {
+            
+            int valortam = list.size()-1;
+           
+            System.out.println("listaaa : " + list );
+            System.out.println("listaaa : " + list.size() );
+            
+            if (list.get(1) == Identificador.EXPRESION ){
+                List <Object> lista = (List <Object>) list.get(0);
+                valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(1)).get(2) + " Columna : "+ ((List<Object>)lista.get(2)).get(3) + "\n";
+            }
+            else{
+                valorSintactico += list.get(0).toString() + " : "+ list.get(1) +"  Fila : "+ list.get(2) +"  Columna : " + list.get(valortam) + "\n";
+            }
+        }
+        
         do {
+            
             token = lexicocolor.nextToken();
             colorPalabrasprueba(token);
 
@@ -299,10 +322,10 @@ public class Inicio extends javax.swing.JFrame {
         System.out.println("tablaLsitadelistas : " + newListOfLists);
 
         colorPalabras();
+        
 
         jTextArea2.setText(textFinal);
-
-
+        jTextArea1.setText(valorSintactico);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
@@ -396,6 +419,7 @@ public class Inicio extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         jTextPane1.setText("");
+        jTextArea1.setText("");
         jTextArea2.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
 
