@@ -7,6 +7,7 @@ package com.ipc2.analizador.Sintactico;
 import com.ipc2.analizador.Lexico.LexicoPrueba;
 import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoEspacio;
 import com.ipc2.analizador.Lexico.Token.TokenPrueba;
+import com.ipc2.analizador.Sintactico.ReglasProduccion.Expresiones;
 import com.ipc2.analizador.Sintactico.ReglasProduccion.OperacionesAritmeticas;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +28,8 @@ public class Sintactico {
     
     public List<List<Object>> valorSintactico (String input){
    
+        listaToken.clear();
+        
         LexicoPrueba lexicon = new LexicoPrueba(input);
         TokenPrueba tokenn;
         System.out.println(input);
@@ -46,6 +49,25 @@ public class Sintactico {
         System.out.println(listaToken.size());
         int valor = listaToken.size();
         OperacionesAritmeticas nuvOp = new OperacionesAritmeticas();
+        Expresiones nuvEx = new Expresiones();
+        
+        for (int index = valor-1; index >= 0; index--) {
+            System.out.println(index);
+            pila.push(listaToken.get(index));  
+        }
+        
+        System.out.println(pila);
+        
+        while(!pila.empty()){
+            System.out.println(pila);
+            //listaToken = nuvEx.Entrada(pila);
+            listaToken = nuvOp.Entrada(pila);
+        }
+        
+        valor = listaToken.size();
+        
+        System.out.println("valor devuelto : " + listaToken);
+        
         
         for (int index = valor-1; index >= 0; index--) {
             System.out.println(index);
@@ -53,11 +75,10 @@ public class Sintactico {
       
         }
         
-        System.out.println(pila);
-        
         while(!pila.empty()){
             System.out.println(pila);
-            listaToken = nuvOp.Entrada(pila);
+            //listaToken = nuvOp.Entrada(pila);
+            listaToken = nuvEx.Entrada(pila);
         }
         
         System.out.println("valor devuelto : " + listaToken);

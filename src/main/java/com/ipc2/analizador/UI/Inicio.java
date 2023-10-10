@@ -263,17 +263,19 @@ public class Inicio extends javax.swing.JFrame {
 
         do {
             token = lexico.nextToken();
+            if(token.type != TipoEspacio.SPACE){
             System.out.println("El token en totalidad : " + token);
             System.out.println(token.type + ": " + token.value);
             String tokenText = token.type + ": " + token.value;
             mapTokens.put(token.type, token.value);
             System.out.println("Hashmap Tokens valro de inicio: " + mapTokens);
             textFinal += tokenText + " fila : " + token.fila + " columna : " + token.columna + "\n";
+            
             List<Object> valores = Arrays.asList(token.type, token.value);
             tablaToken.add(valores);
             List<Object> tabla = Arrays.asList(token.type, token.type.toString().toLowerCase(), token.value, token.fila, token.columna);
             infoTabla.add(tabla);
-
+            }
         } while (token.type != TipoEspacio.EOF);
 
         //sintactico = new Sintactico(tablaToken);
@@ -287,8 +289,14 @@ public class Inicio extends javax.swing.JFrame {
             System.out.println("listaaa : " + list.size() );
             
             if (list.get(1) == Identificador.EXPRESION ){
+                System.out.println("Entrando a Expresion");
                 List <Object> lista = (List <Object>) list.get(0);
-                valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(1)).get(2) + " Columna : "+ ((List<Object>)lista.get(2)).get(3) + "\n";
+                System.out.println(list.get(valortam-1));
+                System.out.println(list.get(valortam));
+                System.out.println(lista.get(0));
+                System.out.println(((List<Object>)lista.get(0)).get(2));
+                System.out.println(((List<Object>)lista.get(0)).get(3));
+                valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(0)).get(2) + " Columna : "+ ((List<Object>)lista.get(0)).get(3) + "\n";
             }
             else{
                 valorSintactico += list.get(0).toString() + " : "+ list.get(1) +"  Fila : "+ list.get(2) +"  Columna : " + list.get(valortam) + "\n";

@@ -45,14 +45,14 @@ public class OperacionesAritmeticas {
                 case INTEGER:
                     System.out.println("Numero entero");
                     System.out.println(valor);
-                    Bloque += "\n "+ valor.get(1) + " ";
+                    Bloque += "\n " + valor.get(1) + " ";
                     lista.add(valor);
                     Operador(pila);
                     return listaTotal;
                 case DECIMAL:
                     System.out.println("Numero decimal");
                     System.out.println(valor);
-                    Bloque += "\n "+ valor.get(1) + " ";
+                    Bloque += "\n " + valor.get(1) + " ";
                     lista.add(valor);
                     Operador(pila);
                     return listaTotal;
@@ -61,12 +61,11 @@ public class OperacionesAritmeticas {
                     break;
             }
 
-        }
-        else{
-            System.out.println("valor de inicio : "+valor);
+        } else {
+            System.out.println("valor de inicio : " + valor);
             listaTotal.add(valor);
         }
-        
+
         return listaTotal;
 
     }
@@ -122,9 +121,15 @@ public class OperacionesAritmeticas {
 
                     return null;
             }
-        }
-        else{
-            listaTotal.add(valor);
+        } else {
+            lista = new ArrayList<>(lista);
+            List<Object> listaenlista = new ArrayList<>();
+            listaenlista.add(lista);
+            System.out.println("lista en lista : " + listaenlista);
+            //lista.add(Identificador.EXPRESION);
+            lista = Arrays.asList(lista, Identificador.EXPRESION, "Declaracion y asignacion de operaciones Aritmmeticas", Bloque);
+            listaTotal.add(lista);
+            System.out.println(listaTotal);
         }
         return null;
 
@@ -159,7 +164,7 @@ public class OperacionesAritmeticas {
                             listaenlista.add(lista);
                             System.out.println("lista en lista : " + listaenlista);
                             //lista.add(Identificador.EXPRESION);
-                            lista = Arrays.asList(lista, Identificador.EXPRESION, " Declaracion y asignacion de operaciones Aritmmeticas",Bloque);
+                            lista = Arrays.asList(lista, Identificador.EXPRESION, " Declaracion y asignacion de operaciones Aritmmeticas", Bloque);
                             listaTotal.add(lista);
                             System.out.println(listaTotal);
                         }
@@ -169,7 +174,7 @@ public class OperacionesAritmeticas {
                         listaenlista.add(lista);
                         System.out.println("lista en lista : " + listaenlista);
                         //lista.add(Identificador.EXPRESION);
-                        lista = Arrays.asList(lista, Identificador.EXPRESION, "Declaracion y asignacion de operaciones Aritmmeticas",Bloque);
+                        lista = Arrays.asList(lista, Identificador.EXPRESION, "Declaracion y asignacion de operaciones Aritmmeticas", Bloque);
                         listaTotal.add(lista);
                         System.out.println(listaTotal);
                     }
@@ -194,20 +199,20 @@ public class OperacionesAritmeticas {
                             listaenlista.add(lista);
                             System.out.println("lista en lista : " + listaenlista);
                             //lista.add(Identificador.EXPRESION);
-                            lista = Arrays.asList(lista, Identificador.EXPRESION, " Declaracion y asignacion de operaciones Aritmmeticas",Bloque);
+                            lista = Arrays.asList(lista, Identificador.EXPRESION, " Declaracion y asignacion de operaciones Aritmmeticas", Bloque);
                             listaTotal.add(lista);
-                            System.out.println("valor lista : "+listaTotal);
+                            System.out.println("valor lista : " + listaTotal);
                         }
                     } else {
-                        
+
                         lista = new ArrayList<>(lista);
                         List<Object> listaenlista = new ArrayList<>();
                         listaenlista.add(lista);
                         System.out.println("lista en lista : " + listaenlista);
                         //lista.add(Identificador.EXPRESION);
-                        lista = Arrays.asList(lista, Identificador.EXPRESION, " Declaracion y asignacion de operaciones Aritmmeticas",Bloque);
+                        lista = Arrays.asList(lista, Identificador.EXPRESION, " Declaracion y asignacion de operaciones Aritmmeticas", Bloque);
                         listaTotal.add(lista);
-                        System.out.println("valor lista : "+listaTotal);
+                        System.out.println("valor lista : " + listaTotal);
                     }
 
                     return listaTotal;
@@ -221,7 +226,7 @@ public class OperacionesAritmeticas {
                     break;
             }
         }
-        
+
         return null;
 
     }
