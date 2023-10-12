@@ -4,25 +4,30 @@
  */
 package com.ipc2.analizador.Sintactico.ReglasProduccion;
 
-import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoAsignacion;
 import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoIdentificador;
+import static com.ipc2.analizador.Lexico.Token.TipoTokens.TipoIdentificador.ID;
+import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoOperadorAsignacion;
+import static com.ipc2.analizador.Lexico.Token.TipoTokens.TipoOperadorAsignacion.DOBLEMULTII;
+import static com.ipc2.analizador.Lexico.Token.TipoTokens.TipoOperadorAsignacion.MULTII;
+import static com.ipc2.analizador.Sintactico.ReglasProduccion.Identificador.EXPRESION;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
+
+
 /**
  *
  * @author carlos117
  */
+public class AsignacionOperador {
 
-public class Asignacion {  
-    
-    private List<Object> lista;
+ private List<Object> lista;
     private final List<List<Object>> listaTotal;
     private String Bloque;
 
-    public Asignacion() {
+    public AsignacionOperador() {
         lista = new ArrayList<>();
         listaTotal = new ArrayList<>();
         Bloque = "";
@@ -42,14 +47,15 @@ public class Asignacion {
                     System.out.println("ID");
                     System.out.println(valor);
                     Bloque +=  valor.get(1) + " ";
-                    if(((List<Object>)pila.peek()).get(0) instanceof TipoAsignacion){
+                    if(((List<Object>)pila.peek()).get(0) instanceof TipoOperadorAsignacion){
+                        System.out.println("Asignacion de Operador valor siguiente  :  " + pila.peek());
                         lista.add(valor);
-                        Asignador(pila);
+                        AsignadorOperador(pila);
                     }else{
                         System.out.println("valor siguiente  :  " + pila.peek());
                         listaTotal.add(valor);
                     }
-                   
+                    
                     return listaTotal;
                 default:
                     listaTotal.add(valor);
@@ -66,23 +72,58 @@ public class Asignacion {
 
     }
 
-    public List<Object> Asignador(Stack pila) {
+    public List<Object> AsignadorOperador(Stack pila) {
 
         List<Object> valor = (List<Object>) pila.pop();
-        if (valor.get(0) instanceof TipoAsignacion) {
+        if (valor.get(0) instanceof TipoOperadorAsignacion) {
 
             System.out.println(valor);
 
-            switch ((TipoAsignacion) valor.get(0)) {
-                case ASIG:
-                    System.out.println("Asignador");
+            switch ((TipoOperadorAsignacion) valor.get(0)) {
+                case SUMAI:
+                    System.out.println("Suma igual");
+                    System.out.println(valor);
+                    Bloque += valor.get(1) + " ";
+                    lista.add(valor);
+                    Valor(pila);
+                    return lista;
+                case RESTAI:
+                    System.out.println("Resta igual");
+                    System.out.println(valor);
+                    Bloque += valor.get(1) + " ";
+                    lista.add(valor);
+                    Valor(pila);
+                    return lista;
+                case DIVI:
+                    System.out.println("Division igual");
+                    System.out.println(valor);
+                    Bloque += valor.get(1) + " ";
+                    lista.add(valor);
+                    Valor(pila);
+                    return lista;
+                case MULTII:
+                    System.out.println("Multiplicacion Igual");
+                    System.out.println(valor);
+                    Bloque += valor.get(1) + " ";
+                    lista.add(valor);
+                    Valor(pila);
+                    return lista;
+                case DOBLEMULTII:
+                    System.out.println("Multiplicacion doble Igual");
+                    System.out.println(valor);
+                    Bloque += valor.get(1) + " ";
+                    lista.add(valor);
+                    Valor(pila);
+                    return lista;
+                case MODULOI:
+                    System.out.println("Modulo Igual");
                     System.out.println(valor);
                     Bloque += valor.get(1) + " ";
                     lista.add(valor);
                     Valor(pila);
                     return lista;
                 default:
-                    System.out.println("Error falta Asignacion =");
+                    System.out.println("Error");
                     listaTotal.add(valor);
                     return null;
             }
@@ -113,7 +154,7 @@ public class Asignacion {
                     
                     System.out.println("lista en lista : " + listaenlista);
                     //lista.add(Identificador.EXPRESION);
-                    lista = Arrays.asList( lista, Identificador.ASIG, "Asignacion",Bloque);
+                    lista = Arrays.asList( lista, Identificador.ASIGCOP, "Asignacion Operador",Bloque);
                     listaTotal.add(lista);
                     System.out.println(listaTotal);
                     
@@ -129,10 +170,9 @@ public class Asignacion {
                     }
                     break;
             }
-        }else{
-            listaTotal.add(valor);
         }
         
         return null;
     }
+   
 }

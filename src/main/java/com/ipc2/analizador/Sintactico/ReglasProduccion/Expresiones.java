@@ -47,13 +47,13 @@ public class Expresiones {
                     }*/
                     System.out.println("Numero entero");
                     System.out.println(valor);
-                    Bloque += "\n "+ valor.get(1) + " ";
+                    Bloque += " " + valor.get(1) + " ";
                     lista.add(valor);
                     lista = new ArrayList<>(lista);
                     List<Object> listaenlista = new ArrayList<>();
                     listaenlista.add(lista);
                     System.out.println("lista en lista : " + listaenlista);
-                    lista = Arrays.asList(lista, Identificador.EXPRESION, " Expresion Numero Entero",Bloque);
+                    lista = Arrays.asList(lista, Identificador.EXPRESION, " Expresion Numero Entero", Bloque);
                     listaTotal.add(lista);
                     System.out.println(listaTotal);
                     return listaTotal;
@@ -61,50 +61,53 @@ public class Expresiones {
                     System.out.println("Cadena");
                     System.out.println(valor);
                     lista.add(valor);
-                    if(!pila.empty()){
-                        Bloque += "\n "+ valor.get(1) + " ";
-                        if (pila.peek() == TipoAritmetico.SUMA) {
+                    if (!pila.empty()) {
+                        Bloque += " " + valor.get(1) + " ";
+                        if (((List<Object>) pila.peek()).get(0) == TipoAritmetico.SUMA) {
                             Operador(pila);
-                        }   
+                        } else {
+                            lista = new ArrayList<>(lista);
+                            List<Object> listaenlista2 = new ArrayList<>();
+                            listaenlista2.add(lista);
+                            System.out.println("lista en lista : " + listaenlista2);
+                            lista = Arrays.asList(lista, Identificador.EXPRESION, " Expresion Cadena", Bloque);
+                            listaTotal.add(lista);
+                            System.out.println(listaTotal);
+                        }
                     }
-                    lista = new ArrayList<>(lista);
-                    List<Object> listaenlista2 = new ArrayList<>();
-                    listaenlista2.add(lista);
-                    System.out.println("lista en lista : " + listaenlista2);
-                    lista = Arrays.asList(lista, Identificador.EXPRESION, " Expresion Cadena",Bloque);
-                    listaTotal.add(lista);
-                    System.out.println(listaTotal);
+
                     return listaTotal;
                 case BOOLEAN:
                     System.out.println("Boolean");
                     System.out.println(valor);
-                    
+
                     lista.add(valor);
-                    if(!pila.empty()){
-                        Bloque += "\n "+ valor.get(1) + " ";
-                        if (pila.peek() == TipoAritmetico.SUMA) {
+                    if (!pila.empty()) {
+                        Bloque += " " + valor.get(1) + " ";
+                        if (((List<Object>) pila.peek()).get(0) == TipoAritmetico.SUMA) {
                             Operador(pila);
-                        }   
+                        } else {
+                            lista = new ArrayList<>(lista);
+                            List<Object> listaenlista3 = new ArrayList<>();
+                            listaenlista3.add(lista);
+                            System.out.println("lista en lista : " + listaenlista3);
+                            lista = Arrays.asList(lista, Identificador.EXPRESION, " Expresion Booleana", Bloque);
+                            listaTotal.add(lista);
+                            System.out.println(listaTotal);
+                        }
                     }
-                    lista = new ArrayList<>(lista);
-                    List<Object> listaenlista3 = new ArrayList<>();
-                    listaenlista3.add(lista);
-                    System.out.println("lista en lista : " + listaenlista3);
-                    lista = Arrays.asList(lista, Identificador.EXPRESION, " Expresion Booleana",Bloque);
-                    listaTotal.add(lista);
-                    System.out.println(listaTotal);
+
                     return listaTotal;
                 default:
                     listaTotal.add(valor);
                     break;
             }
 
-        }
-        else{
-            System.out.println("valor de inicio : "+valor);
+        } else {
+            System.out.println("valor de inicio : " + valor);
             listaTotal.add(valor);
         }
-        
+
         return listaTotal;
 
     }
@@ -128,8 +131,7 @@ public class Expresiones {
 
                     return null;
             }
-        }
-        else{
+        } else {
             listaTotal.add(valor);
         }
         return null;
@@ -153,10 +155,10 @@ public class Expresiones {
                         System.out.println("Valor : " + valorn);
                     }
 
-                    Bloque += valor.get(1) + " ";
                     lista.add(valor);
 
                     if (valorn != null) {
+                        Bloque += valor.get(1) + " ";
                         if (valorn.get(0) instanceof TipoAritmetico) {
                             Operador(pila);
                         } else {
@@ -165,7 +167,7 @@ public class Expresiones {
                             listaenlista.add(lista);
                             System.out.println("lista en lista : " + listaenlista);
                             //lista.add(Identificador.EXPRESION);
-                            lista = Arrays.asList(lista, Identificador.EXPRESION, " Expresion Cadena",Bloque);
+                            lista = Arrays.asList(lista, Identificador.EXPRESION, " Expresion Cadena", Bloque);
                             listaTotal.add(lista);
                             System.out.println(listaTotal);
                         }
@@ -175,13 +177,13 @@ public class Expresiones {
                         listaenlista.add(lista);
                         System.out.println("lista en lista : " + listaenlista);
                         //lista.add(Identificador.EXPRESION);
-                        lista = Arrays.asList(lista, Identificador.EXPRESION, "Expresion Cadena",Bloque);
+                        lista = Arrays.asList(lista, Identificador.EXPRESION, "Expresion Cadena", Bloque);
                         listaTotal.add(lista);
                         System.out.println(listaTotal);
                     }
 
                     return listaTotal;
-                    
+
                 case BOOLEAN:
                     System.out.println("Boolean n");
 
@@ -202,7 +204,7 @@ public class Expresiones {
                             listaenlista.add(lista);
                             System.out.println("lista en lista : " + listaenlista);
                             //lista.add(Identificador.EXPRESION);
-                            lista = Arrays.asList(lista, Identificador.EXPRESION, "Expresion Booleana",Bloque);
+                            lista = Arrays.asList(lista, Identificador.EXPRESION, "Expresion Booleana", Bloque);
                             listaTotal.add(lista);
                             System.out.println(listaTotal);
                         }
@@ -212,7 +214,7 @@ public class Expresiones {
                         listaenlista.add(lista);
                         System.out.println("lista en lista : " + listaenlista);
                         //lista.add(Identificador.EXPRESION);
-                        lista = Arrays.asList(lista, Identificador.EXPRESION, "Expresion Booleana",Bloque);
+                        lista = Arrays.asList(lista, Identificador.EXPRESION, "Expresion Booleana", Bloque);
                         listaTotal.add(lista);
                         System.out.println(listaTotal);
                     }
@@ -229,9 +231,9 @@ public class Expresiones {
                     break;
             }
         }
-        
+
         return null;
 
     }
-    
+
 }

@@ -283,6 +283,8 @@ public class Inicio extends javax.swing.JFrame {
         
         for (List<Object> list : SintacticoTabla) {
             
+            
+            
             int valortam = list.size()-1;
            
             System.out.println("listaaa : " + list );
@@ -296,6 +298,22 @@ public class Inicio extends javax.swing.JFrame {
                 System.out.println(lista.get(0));
                 System.out.println(((List<Object>)lista.get(0)).get(2));
                 System.out.println(((List<Object>)lista.get(0)).get(3));
+                valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(0)).get(2) + " Columna : "+ ((List<Object>)lista.get(0)).get(3) + "\n";
+            }
+            else if(list.get(1) == Identificador.ASIG){
+                List <Object> lista = (List <Object>) list.get(0);
+                valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(0)).get(2) + " Columna : "+ ((List<Object>)lista.get(0)).get(3) + "\n";
+            }
+            else if(list.get(1) == Identificador.ASIGOPCOMP){
+                List <Object> lista = (List <Object>) list.get(0);
+                valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(0)).get(2) + " Columna : "+ ((List<Object>)lista.get(0)).get(3) + "\n";
+            }
+            else if(list.get(1) == Identificador.ASIGCOP){
+                List <Object> lista = (List <Object>) list.get(0);
+                valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(0)).get(2) + " Columna : "+ ((List<Object>)lista.get(0)).get(3) + "\n";
+            }
+            else if(list.get(1) == Identificador.OPCOMP){
+                List <Object> lista = (List <Object>) list.get(0);
                 valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(0)).get(2) + " Columna : "+ ((List<Object>)lista.get(0)).get(3) + "\n";
             }
             else{

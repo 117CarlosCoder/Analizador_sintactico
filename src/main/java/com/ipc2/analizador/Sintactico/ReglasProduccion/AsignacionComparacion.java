@@ -5,7 +5,9 @@
 package com.ipc2.analizador.Sintactico.ReglasProduccion;
 
 import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoAsignacion;
+import static com.ipc2.analizador.Lexico.Token.TipoTokens.TipoAsignacion.ASIG;
 import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoIdentificador;
+import static com.ipc2.analizador.Lexico.Token.TipoTokens.TipoIdentificador.ID;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,14 +17,12 @@ import java.util.Stack;
  *
  * @author carlos117
  */
-
-public class Asignacion {  
-    
+public class AsignacionComparacion {
     private List<Object> lista;
     private final List<List<Object>> listaTotal;
     private String Bloque;
 
-    public Asignacion() {
+    public AsignacionComparacion() {
         lista = new ArrayList<>();
         listaTotal = new ArrayList<>();
         Bloque = "";
@@ -98,12 +98,12 @@ public class Asignacion {
 
         List<Object> valor = (List<Object>) pila.pop();
 
-        if (valor.get(1) == Identificador.EXPRESION) {
+        if (valor.get(1) == Identificador.OPCOMP) {
             System.out.println(valor);
 
             switch ((Identificador) valor.get(1)) {
-                case EXPRESION:
-                    System.out.println("Expresion n");
+                case OPCOMP :
+                    System.out.println("Operador n");
                     Bloque += valor.get(3) + " ";
                     lista.add(valor);
 
@@ -113,7 +113,7 @@ public class Asignacion {
                     
                     System.out.println("lista en lista : " + listaenlista);
                     //lista.add(Identificador.EXPRESION);
-                    lista = Arrays.asList( lista, Identificador.ASIG, "Asignacion",Bloque);
+                    lista = Arrays.asList( lista, Identificador.ASIGOPCOMP, "Asignacion Operador Comparacion",Bloque);
                     listaTotal.add(lista);
                     System.out.println(listaTotal);
                     
@@ -121,7 +121,7 @@ public class Asignacion {
                     return listaTotal;
                     
                 default:
-                    System.out.println("Error se esperaba una expresion");
+                    System.out.println("Error se esperaba un operador comparacion");
                     Bloque = "";
                     lista.clear();
                     if (!pila.empty()) {

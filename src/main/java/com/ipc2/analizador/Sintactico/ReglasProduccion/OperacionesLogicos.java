@@ -8,11 +8,6 @@ package com.ipc2.analizador.Sintactico.ReglasProduccion;
  *
  * @author carlos117
  */
-public enum Identificador {
-    EXPRESION,
-    BLOQUE,
-    ASIG,
-    ASIGCOP,
-    OPCOMP,
-    ASIGOPCOMP
+public class OperacionesLogicos {
+    
 }
