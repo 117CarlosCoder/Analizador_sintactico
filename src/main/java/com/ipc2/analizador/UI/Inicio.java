@@ -290,7 +290,7 @@ public class Inicio extends javax.swing.JFrame {
             System.out.println("listaaa : " + list );
             System.out.println("listaaa : " + list.size() );
             
-            if (list.get(1) == Identificador.EXPRESION ){
+            /*if (list.get(1) == Identificador.EXPRESION ){
                 System.out.println("Entrando a Expresion");
                 List <Object> lista = (List <Object>) list.get(0);
                 System.out.println(list.get(valortam-1));
@@ -299,8 +299,8 @@ public class Inicio extends javax.swing.JFrame {
                 System.out.println(((List<Object>)lista.get(0)).get(2));
                 System.out.println(((List<Object>)lista.get(0)).get(3));
                 valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(0)).get(2) + " Columna : "+ ((List<Object>)lista.get(0)).get(3) + "\n";
-            }
-            else if(list.get(1) == Identificador.ASIG){
+            }*/
+            if(list.get(1) == Identificador.ASIG){
                 List <Object> lista = (List <Object>) list.get(0);
                 valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(0)).get(2) + " Columna : "+ ((List<Object>)lista.get(0)).get(3) + "\n";
             }
@@ -312,7 +312,27 @@ public class Inicio extends javax.swing.JFrame {
                 List <Object> lista = (List <Object>) list.get(0);
                 valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(0)).get(2) + " Columna : "+ ((List<Object>)lista.get(0)).get(3) + "\n";
             }
-            else if(list.get(1) == Identificador.OPCOMP){
+            else if(list.get(1) == Identificador.ASIGOPCOMP){
+                List <Object> lista = (List <Object>) list.get(0);
+                valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(0)).get(2) + " Columna : "+ ((List<Object>)lista.get(0)).get(3) + "\n";
+            }
+            else if(list.get(1) == Identificador.ASIGOPLOGIC){
+                List <Object> lista = (List <Object>) list.get(0);
+                valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(0)).get(2) + " Columna : "+ ((List<Object>)lista.get(0)).get(3) + "\n";
+            }
+            else if(list.get(1) == Identificador.ASIGOPIDNT){
+                List <Object> lista = (List <Object>) list.get(0);
+                valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(0)).get(2) + " Columna : "+ ((List<Object>)lista.get(0)).get(3) + "\n";
+            }
+            else if(list.get(1) == Identificador.ASIGOPPERT){
+                List <Object> lista = (List <Object>) list.get(0);
+                valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(0)).get(2) + " Columna : "+ ((List<Object>)lista.get(0)).get(3) + "\n";
+            }
+            else if(list.get(1) == Identificador.ASIGOPBITS){
+                List <Object> lista = (List <Object>) list.get(0);
+                valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(0)).get(2) + " Columna : "+ ((List<Object>)lista.get(0)).get(3) + "\n";
+            }
+            else if(list.get(1) == Identificador.OPTERNARIO){
                 List <Object> lista = (List <Object>) list.get(0);
                 valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(0)).get(2) + " Columna : "+ ((List<Object>)lista.get(0)).get(3) + "\n";
             }

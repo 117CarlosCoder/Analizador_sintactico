@@ -17,12 +17,12 @@ import java.util.Stack;
  *
  * @author carlos117
  */
-public class AsignacionComparacion {
+public class AsignacionIdentidad {
     private List<Object> lista;
     private final List<List<Object>> listaTotal;
     private String Bloque;
 
-    public AsignacionComparacion() {
+    public AsignacionIdentidad() {
         lista = new ArrayList<>();
         listaTotal = new ArrayList<>();
         Bloque = "";
@@ -79,8 +79,8 @@ public class AsignacionComparacion {
                     System.out.println("Asignador");
                     System.out.println(valor);
                     Bloque += valor.get(1) + " ";
-                    lista.add(valor);
                     listaTotal.add(valor);
+                    lista.add(valor);
                     Valor(pila);
                     return lista;
                 default:
@@ -100,11 +100,11 @@ public class AsignacionComparacion {
 
         List<Object> valor = (List<Object>) pila.pop();
 
-        if (valor.get(1) == Identificador.OPCOMP) {
+        if (valor.get(1) == Identificador.OPIDNT) {
             System.out.println(valor);
 
             switch ((Identificador) valor.get(1)) {
-                case OPCOMP :
+                case OPIDNT :
                     System.out.println("Operador n");
                     Bloque += valor.get(3) + " ";
                     lista.add(valor);
@@ -115,7 +115,7 @@ public class AsignacionComparacion {
                     
                     System.out.println("lista en lista : " + listaenlista);
                     //lista.add(Identificador.EXPRESION);
-                    lista = Arrays.asList( lista, Identificador.ASIGOPCOMP, "Asignacion Operador Comparacion",Bloque);
+                    lista = Arrays.asList( lista, Identificador.ASIGOPIDNT, "Asignacion Operador Identidad",Bloque);
                     listaTotal.add(lista);
                     System.out.println(listaTotal);
                     
@@ -123,7 +123,7 @@ public class AsignacionComparacion {
                     return listaTotal;
                     
                 default:
-                    System.out.println("Error se esperaba un operador comparacion");
+                    System.out.println("Error se esperaba un operador Logico");
                     Bloque = "";
                     lista.clear();
                     if (!pila.empty()) {

@@ -4,8 +4,7 @@
  */
 package com.ipc2.analizador.Sintactico.ReglasProduccion;
 
-import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoLogico;
-import static com.ipc2.analizador.Sintactico.ReglasProduccion.Identificador.OPCOMP;
+import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoBits;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,12 +14,12 @@ import java.util.Stack;
  *
  * @author carlos117
  */
-public class OperacionesLogicos {
+public class OperacionesBits {
     private List<Object> lista;
     private final List<List<Object>> listaTotal;
     private String Bloque;
 
-    public OperacionesLogicos() {
+    public OperacionesBits() {
         lista = new ArrayList<>();
         listaTotal = new ArrayList<>();
         Bloque = "";
@@ -32,55 +31,30 @@ public class OperacionesLogicos {
         //listaTotal.clear();
         List<Object> valor = (List<Object>) pila.pop();
 
-        if (valor.get(1) == Identificador.OPCOMP) {
+        if (valor.get(1) == Identificador.EXPRESION) {
             System.out.println(valor.get(1));
 
             switch ((Identificador) valor.get(1)) {
-                case OPCOMP:
-                    System.out.println("Operador Comparacion");
+                case EXPRESION:
+                    System.out.println("Expresion");
                     System.out.println(valor);
                     Bloque += " " + valor.get(1) + " ";
-                    if (((List<Object>) pila.peek()).get(0) instanceof TipoLogico) {
+                    if (((List<Object>) pila.peek()).get(0) instanceof TipoBits) {
                         lista.add(valor);
-                        Operador(pila);
                     } else {
                         System.out.println("valor siguiente  :  " + pila.peek());
                         listaTotal.add(valor);
                     }
-                    
+                    Operador(pila);
                     return listaTotal;
-                    
+                   
                 default:
                 
                     listaTotal.add(valor);
                     break;
             }
 
-        }else if (valor.get(0) instanceof TipoLogico) {
-            System.out.println(valor.get(0));
-
-            switch ((TipoLogico) valor.get(0)) {
-                case NOT:
-                    System.out.println("Operador Logico Not");
-                    System.out.println(valor);
-                    Bloque += " " + valor.get(1) + " ";
-                    if (((List<Object>) pila.peek()).get(1) == Identificador.OPCOMP) {
-                        lista.add(valor);
-                        Expresion(pila);
-                    } else {
-                        System.out.println("valor siguiente  :  " + pila.peek());
-                        listaTotal.add(valor);
-                    }
-                    
-                    return listaTotal;
-                    
-                default:
-                
-                    listaTotal.add(valor);
-                    break;
-            }
-
-        }else {
+        } else {
             System.out.println("valor de inicio : " + valor);
             listaTotal.add(valor);
             System.out.println("valor de inicio listatotal: " + listaTotal);
@@ -93,11 +67,11 @@ public class OperacionesLogicos {
     public List<Object> Operador(Stack pila) {
 
         List<Object> valor = (List<Object>) pila.pop();
-        if (valor.get(0) instanceof TipoLogico) {
+        if (valor.get(0) instanceof TipoBits) {
 
             System.out.println(valor);
 
-            switch ((TipoLogico) valor.get(0)) {
+            switch ((TipoBits) valor.get(0)) {
                 case AND:
                     System.out.println("Operador");
                     Bloque += valor.get(1) + " ";
@@ -112,7 +86,19 @@ public class OperacionesLogicos {
                     Expresion(pila);
                     return lista;
 
-                case NOT:
+                case XOR:
+                    System.out.println("Operador");
+                    Bloque += valor.get(1) + " ";
+                    lista.add(valor);
+                    Expresion(pila);
+                    return lista;
+                case DEZIZQ:
+                    System.out.println("Operador");
+                    Bloque += valor.get(1) + " ";
+                    lista.add(valor);
+                    Expresion(pila);
+                    return lista;
+                case DEZDER:
                     System.out.println("Operador");
                     Bloque += valor.get(1) + " ";
                     lista.add(valor);
@@ -137,12 +123,12 @@ public class OperacionesLogicos {
         List<Object> valor = (List<Object>) pila.pop();
         List<Object> valorn = null;
 
-        if (valor.get(1) == Identificador.OPCOMP) {
+        if (valor.get(1) == Identificador.EXPRESION) {
             System.out.println(valor);
 
             switch ((Identificador) valor.get(1)) {
-                case OPCOMP:
-                    System.out.println("Operador comparacion");
+                case EXPRESION:
+                    System.out.println("Expresion n ");
 
                  
                     Bloque += valor.get(1) + " ";
@@ -152,14 +138,14 @@ public class OperacionesLogicos {
                     listaenlista.add(lista);
                     System.out.println("lista en lista : " + listaenlista);
                     //lista.add(Identificador.EXPRESION);
-                    lista = Arrays.asList(lista, Identificador.OPLOGIC, "Operaciones Logicas",Bloque);
+                    lista = Arrays.asList(lista, Identificador.OPBITS, "Operaciones de Bits", Bloque);
                     listaTotal.add(lista);
                     System.out.println(listaTotal);
                     
 
                     return listaTotal;
                 default:
-                    System.out.println("Error se esperaba Operador de comparacion");
+                    System.out.println("Error se esperaba numero n");
                     Bloque = "";
                     lista.clear();
                     if (!pila.empty()) {
@@ -167,8 +153,6 @@ public class OperacionesLogicos {
                     }
                     break;
             }
-        }else{
-            listaTotal.add(valor);
         }
 
         return null;

@@ -17,12 +17,12 @@ import java.util.Stack;
  *
  * @author carlos117
  */
-public class AsignacionComparacion {
+public class AsignacionLogico {
     private List<Object> lista;
     private final List<List<Object>> listaTotal;
     private String Bloque;
 
-    public AsignacionComparacion() {
+    public AsignacionLogico() {
         lista = new ArrayList<>();
         listaTotal = new ArrayList<>();
         Bloque = "";
@@ -79,9 +79,15 @@ public class AsignacionComparacion {
                     System.out.println("Asignador");
                     System.out.println(valor);
                     Bloque += valor.get(1) + " ";
-                    lista.add(valor);
-                    listaTotal.add(valor);
-                    Valor(pila);
+                     if (((List<Object>) pila.peek()).get(1) == Identificador.OPLOGIC) {
+                        
+                        lista.add(valor);
+                        Valor(pila);
+                    } else {
+                        System.out.println("valor siguiente  :  " + pila.peek());
+                        listaTotal.add(valor);
+                    }
+                    
                     return lista;
                 default:
                     System.out.println("Error falta Asignacion =");
@@ -100,11 +106,12 @@ public class AsignacionComparacion {
 
         List<Object> valor = (List<Object>) pila.pop();
 
-        if (valor.get(1) == Identificador.OPCOMP) {
+        if (valor.get(1) == Identificador.OPLOGIC) {
+           
             System.out.println(valor);
 
             switch ((Identificador) valor.get(1)) {
-                case OPCOMP :
+                case OPLOGIC :
                     System.out.println("Operador n");
                     Bloque += valor.get(3) + " ";
                     lista.add(valor);
@@ -115,7 +122,7 @@ public class AsignacionComparacion {
                     
                     System.out.println("lista en lista : " + listaenlista);
                     //lista.add(Identificador.EXPRESION);
-                    lista = Arrays.asList( lista, Identificador.ASIGOPCOMP, "Asignacion Operador Comparacion",Bloque);
+                    lista = Arrays.asList( lista, Identificador.ASIGOPCOMP, "Asignacion Operador Logico",Bloque);
                     listaTotal.add(lista);
                     System.out.println(listaTotal);
                     
@@ -123,7 +130,7 @@ public class AsignacionComparacion {
                     return listaTotal;
                     
                 default:
-                    System.out.println("Error se esperaba un operador comparacion");
+                    System.out.println("Error se esperaba un operador Logico");
                     Bloque = "";
                     lista.clear();
                     if (!pila.empty()) {
@@ -137,4 +144,6 @@ public class AsignacionComparacion {
         
         return null;
     }
+
+    
 }

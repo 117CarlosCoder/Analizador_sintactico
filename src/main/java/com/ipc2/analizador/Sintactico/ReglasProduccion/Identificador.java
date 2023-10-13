@@ -14,5 +14,14 @@ public enum Identificador {
     ASIG,
     ASIGCOP,
     OPCOMP,
-    ASIGOPCOMP
+    OPLOGIC,
+    OPIDNT,
+    OPIPERT,
+    OPBITS,
+    OPTERNARIO,
+    ASIGOPCOMP,
+    ASIGOPLOGIC,
+    ASIGOPIDNT,
+    ASIGOPPERT,
+    ASIGOPBITS
 }

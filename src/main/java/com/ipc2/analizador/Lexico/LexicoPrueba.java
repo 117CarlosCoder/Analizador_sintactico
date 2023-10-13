@@ -28,8 +28,11 @@ public class LexicoPrueba {
             + "(\"[^\n]*$|'[^\\n]*$)|"
             + "('[^']*')|"
             + "(==|!=|>=|<=|>|<)|"
+            + "(<<|>>|&|(\\|)|(\\^))|"
             + "(\\+=|-=|\\*=|\\/=|\\**=|\\%=)|"
             + "(=)|"
+            + "(\\[)|"
+            + "(\\])|"
             + "(\\()|"
             + "(\\))|"
             + "(,)|"
@@ -136,6 +139,15 @@ public class LexicoPrueba {
             System.out.println("tipo: " + tipoAritmetico + " token :" + tokenText);
             return new TokenPrueba(tipoAritmetico, tokenText, fila, columna);
 
+        } else if (tokenText.matches("and")) {
+            System.out.println("tipo: " + TipoLogico.AND + " token :" + tokenText);
+            return new TokenPrueba(TipoLogico.AND, tokenText, fila, columna);
+        } else if (tokenText.matches("or")) {
+            System.out.println("tipo: " + TipoLogico.OR + " token :" + tokenText);
+            return new TokenPrueba(TipoLogico.OR, tokenText, fila, columna);
+        } else if (tokenText.matches("not")) {
+            System.out.println("tipo: " + TipoLogico.NOT + " token :" + tokenText);
+            return new TokenPrueba(TipoLogico.NOT, tokenText, fila, columna);
         } else if (tokenText.matches("True|False")) {
             System.out.println("tipo: " + TipoConstante.BOOLEAN + " token :" + tokenText);
             return new TokenPrueba(TipoConstante.BOOLEAN, tokenText, fila, columna);
@@ -220,6 +232,21 @@ public class LexicoPrueba {
         } else if (tokenText.equals("%=")) {
             System.out.println("tipo: " + TipoOperadorAsignacion.MODULOI + " token :" + tokenText);
             return new TokenPrueba(TipoOperadorAsignacion.MODULOI, tokenText, fila, columna);
+        } else if (tokenText.equals("<<")) {
+            System.out.println("tipo: " + TipoBits.DEZIZQ + " token :" + tokenText);
+            return new TokenPrueba(TipoBits.DEZIZQ , tokenText, fila, columna);
+        } else if (tokenText.equals(">>")) {
+            System.out.println("tipo: " + TipoBits.DEZDER  + " token :" + tokenText);
+            return new TokenPrueba(TipoBits.DEZDER , tokenText, fila, columna);
+        } else if (tokenText.equals("&")) {
+            System.out.println("tipo: " + TipoBits.AND  + " token :" + tokenText);
+            return new TokenPrueba(TipoBits.AND , tokenText, fila, columna);
+        } else if (tokenText.equals("|")) {
+            System.out.println("tipo: " + TipoBits.OR + " token :" + tokenText);
+            return new TokenPrueba(TipoBits.OR, tokenText, fila, columna);
+        } else if (tokenText.equals("^")) {
+            System.out.println("tipo: " + TipoBits.XOR + " token :" + tokenText);
+            return new TokenPrueba(TipoBits.XOR, tokenText, fila, columna);
         }/* else if (tokenText.equals("\n")) {
             System.out.println("tipo: " +TipoEspacio.SALTO + " token :" + tokenText);
             return new TokenPrueba(TipoEspacio.SALTO, tokenText, fila, columna);

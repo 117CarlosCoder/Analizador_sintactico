@@ -42,12 +42,14 @@ public class Asignacion {
                     System.out.println("ID");
                     System.out.println(valor);
                     Bloque +=  valor.get(1) + " ";
+                    
+                    listaTotal.add(valor);
                     if(((List<Object>)pila.peek()).get(0) instanceof TipoAsignacion){
                         lista.add(valor);
                         Asignador(pila);
                     }else{
                         System.out.println("valor siguiente  :  " + pila.peek());
-                        listaTotal.add(valor);
+                        //listaTotal.add(valor);
                     }
                    
                     return listaTotal;
@@ -79,6 +81,7 @@ public class Asignacion {
                     System.out.println(valor);
                     Bloque += valor.get(1) + " ";
                     lista.add(valor);
+                    listaTotal.add(valor);
                     Valor(pila);
                     return lista;
                 default:

@@ -8,6 +8,7 @@ import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoAsignacion;
 import static com.ipc2.analizador.Lexico.Token.TipoTokens.TipoAsignacion.ASIG;
 import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoIdentificador;
 import static com.ipc2.analizador.Lexico.Token.TipoTokens.TipoIdentificador.ID;
+import static com.ipc2.analizador.Sintactico.ReglasProduccion.Identificador.OPCOMP;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,12 +18,12 @@ import java.util.Stack;
  *
  * @author carlos117
  */
-public class AsignacionComparacion {
+public class AsignacionBits {
     private List<Object> lista;
     private final List<List<Object>> listaTotal;
     private String Bloque;
 
-    public AsignacionComparacion() {
+    public AsignacionBits() {
         lista = new ArrayList<>();
         listaTotal = new ArrayList<>();
         Bloque = "";
@@ -100,11 +101,11 @@ public class AsignacionComparacion {
 
         List<Object> valor = (List<Object>) pila.pop();
 
-        if (valor.get(1) == Identificador.OPCOMP) {
+        if (valor.get(1) == Identificador.OPBITS) {
             System.out.println(valor);
 
             switch ((Identificador) valor.get(1)) {
-                case OPCOMP :
+                case OPBITS :
                     System.out.println("Operador n");
                     Bloque += valor.get(3) + " ";
                     lista.add(valor);
@@ -115,7 +116,7 @@ public class AsignacionComparacion {
                     
                     System.out.println("lista en lista : " + listaenlista);
                     //lista.add(Identificador.EXPRESION);
-                    lista = Arrays.asList( lista, Identificador.ASIGOPCOMP, "Asignacion Operador Comparacion",Bloque);
+                    lista = Arrays.asList( lista, Identificador.ASIGOPBITS, "Asignacion Operador Bits",Bloque);
                     listaTotal.add(lista);
                     System.out.println(listaTotal);
                     
