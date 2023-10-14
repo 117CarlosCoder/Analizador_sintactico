@@ -30,6 +30,7 @@ public enum TipoPalabraRes {
     NONE,
     NONLOCAL,
     PASS,
+    PRINT,
     RAISE,
     RETURN,
     TRUE,

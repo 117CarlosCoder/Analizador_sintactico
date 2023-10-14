@@ -103,6 +103,7 @@ public class LexicoPrueba {
         palabraResMap.put("None", TipoPalabraRes.NONE);
         palabraResMap.put("nonlocal", TipoPalabraRes.NONLOCAL);
         palabraResMap.put("pass", TipoPalabraRes.PASS);
+        palabraResMap.put("print", TipoPalabraRes.PRINT);
         palabraResMap.put("raise", TipoPalabraRes.RAISE);
         palabraResMap.put("return", TipoPalabraRes.RETURN);
         palabraResMap.put("try", TipoPalabraRes.TRY);

@@ -75,7 +75,18 @@ public class ReportesSintactico extends javax.swing.JPanel {
         );
 
         for (List<Object> list : listOfLists) {
-            tableModel.addRow(list.toArray());
+            
+            Object tipo = list.get(1); 
+            Object tokens = list.get(0);
+            Object Bloque = list.get(list.size()-1);
+            Object Fila = null;
+            Object Columna = null;
+            
+            
+// Obtener el valor para la columna "Tipo"
+            tableModel.addRow(new Object[]{tipo, tokens, Bloque, null, null, Fila, Columna, null});
+            
+            
         }
         
         SwingUtilities.invokeLater(() -> {

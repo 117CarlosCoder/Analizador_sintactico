@@ -5,6 +5,7 @@
 package com.ipc2.analizador.Sintactico;
 
 import com.ipc2.analizador.Lexico.LexicoPrueba;
+import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoComentario;
 import com.ipc2.analizador.Lexico.Token.TipoTokens.TipoEspacio;
 import com.ipc2.analizador.Lexico.Token.TokenPrueba;
 import com.ipc2.analizador.Sintactico.ReglasProduccion.Asignacion;
@@ -14,6 +15,7 @@ import com.ipc2.analizador.Sintactico.ReglasProduccion.AsignacionIdentidad;
 import com.ipc2.analizador.Sintactico.ReglasProduccion.AsignacionLogico;
 import com.ipc2.analizador.Sintactico.ReglasProduccion.AsignacionOperador;
 import com.ipc2.analizador.Sintactico.ReglasProduccion.AsignacionPertenencia;
+import com.ipc2.analizador.Sintactico.ReglasProduccion.Condicion;
 import com.ipc2.analizador.Sintactico.ReglasProduccion.Expresiones;
 import com.ipc2.analizador.Sintactico.ReglasProduccion.OperacionesAritmeticas;
 import com.ipc2.analizador.Sintactico.ReglasProduccion.OperacionesBits;
@@ -21,6 +23,7 @@ import com.ipc2.analizador.Sintactico.ReglasProduccion.OperacionesComparacion;
 import com.ipc2.analizador.Sintactico.ReglasProduccion.OperacionesIdentidad;
 import com.ipc2.analizador.Sintactico.ReglasProduccion.OperacionesLogicos;
 import com.ipc2.analizador.Sintactico.ReglasProduccion.OperacionesPertenencia;
+import com.ipc2.analizador.Sintactico.ReglasProduccion.OperadoresEntradaSalida;
 import com.ipc2.analizador.Sintactico.ReglasProduccion.OperadoresTernarios;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,7 +52,7 @@ public class Sintactico {
         
         do {
             tokenn = lexicon.nextToken();
-            if (tokenn.type != TipoEspacio.SPACE) {
+            if (tokenn.type != TipoEspacio.SPACE && tokenn.type != TipoComentario.COMENT) {
                 List<Object> listaT = Arrays.asList(tokenn.type,tokenn.value,tokenn.fila,tokenn.columna);
                 listaToken.add(listaT);
                 System.out.println("tokens agregados inicio : " + tokenn.type);
@@ -76,6 +79,8 @@ public class Sintactico {
         OperacionesBits  nuvBit= new OperacionesBits();
         AsignacionBits  nuvAsigBit= new AsignacionBits();
         OperadoresTernarios  nuvOpTernario= new OperadoresTernarios();
+        OperadoresEntradaSalida  nuvEntSal= new OperadoresEntradaSalida();
+        Condicion  nuvCondicion= new Condicion();
         
         for (int index = valor-1; index >= 0; index--) {
             System.out.println(index);
@@ -304,6 +309,42 @@ public class Sintactico {
             System.out.println(pila);
             //listaToken = nuvOp.Entrada(pila);
             listaToken = nuvOpTernario.Entrada(pila);
+        }
+        
+        valor = listaToken.size();
+        
+        System.out.println("valor devuelto : " + listaToken);
+        
+        for (int index = valor-1; index >= 0; index--) {
+            System.out.println(index);
+            pila.push(listaToken.get(index));  
+      
+        }
+        
+        System.out.println("**** Operador Entrada y Salida *****");
+        
+        while(!pila.empty()){
+            System.out.println(pila);
+            //listaToken = nuvOp.Entrada(pila);
+            listaToken = nuvEntSal.Entrada(pila);
+        }
+        
+        valor = listaToken.size();
+        
+        System.out.println("valor devuelto : " + listaToken);
+        
+        for (int index = valor-1; index >= 0; index--) {
+            System.out.println(index);
+            pila.push(listaToken.get(index));  
+      
+        }
+        
+        System.out.println("**** Codicion IF *****");
+        
+        while(!pila.empty()){
+            System.out.println(pila);
+            //listaToken = nuvOp.Entrada(pila);
+            listaToken = nuvCondicion.Entrada(pila);
         }
         
         valor = listaToken.size();

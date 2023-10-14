@@ -336,9 +336,23 @@ public class Inicio extends javax.swing.JFrame {
                 List <Object> lista = (List <Object>) list.get(0);
                 valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(0)).get(2) + " Columna : "+ ((List<Object>)lista.get(0)).get(3) + "\n";
             }
-            else{
-                valorSintactico += list.get(0).toString() + " : "+ list.get(1) +"  Fila : "+ list.get(2) +"  Columna : " + list.get(valortam) + "\n";
+            else if(list.get(1) == Identificador.OPENTSAL){
+                List <Object> lista = (List <Object>) list.get(0);
+                valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(0)).get(2) + " Columna : "+ ((List<Object>)lista.get(0)).get(3) + "\n";
             }
+            else if(list.get(1) == Identificador.BLOQUEIF){
+                List <Object> lista = (List <Object>) list.get(0);
+                valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(0)).get(2) + " Columna : "+ ((List<Object>)lista.get(0)).get(3) + "\n";
+            }
+            else if(list.get(1) == Identificador.BLOQUEELIF){
+                List <Object> lista = (List <Object>) list.get(0);
+                valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(0)).get(2) + " Columna : "+ ((List<Object>)lista.get(0)).get(3) + "\n";
+            }
+            else if(list.get(1) == Identificador.BLOQUEELSE){
+                List <Object> lista = (List <Object>) list.get(0);
+                valorSintactico += " "+ list.get(valortam-1) + "\n Bloque : " + list.get(valortam) + "\n Fila : "+ ((List<Object>)lista.get(0)).get(2) + " Columna : "+ ((List<Object>)lista.get(0)).get(3) + "\n";
+            }
+            
         }
         
         do {
@@ -475,13 +489,14 @@ public class Inicio extends javax.swing.JFrame {
         //reporte.removeAll();
         List<List<Object>> listainterna = new ArrayList<>();
         System.out.println(text);
-        if (text != null) {
+        /*if (text != null) {
             listainterna = sintacticoPDa.validarTok(text);
             reportesSintactico.insertarInfo(listainterna);
         }
         else{
             reportesSintactico.insertarInfo(listainterna);
-        }
+        }*/
+         reportesSintactico.insertarInfo(SintacticoTabla);
         
         
         getContentPane().add(reportesSintactico);
